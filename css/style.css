@@ -1193,6 +1193,31 @@ textarea {
   outline-offset: 2px;
 }
 
+/* Active event column highlight in scoreboard */
+.active-event-col {
+  background: var(--color-accent-light) !important;
+  font-weight: 600;
+}
+
+.name-cell {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.card.leader {
+  border: 2px solid var(--color-accent);
+  background: linear-gradient(135deg, var(--color-bg-white) 0%, #fef9e7 100%);
+}
+
+.btn-sm {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
