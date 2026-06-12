@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anmälan – TrelleMasters 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">⛳</span>
+        <span>TrelleMasters 2026</span>
+      </a>
+      <button class="hamburger" aria-label="Öppna meny" aria-expanded="false">&#9776;</button>
+      <div class="nav-links">
+        <a href="index.html">Tävlingen</a>
+        <a href="registrera.html" class="active">Anmälan</a>
+        <a href="deltagare.html">Deltagare</a>
+        <a href="resultattavla.html">Resultattavla</a>
+        <a href="historik.html">Historik</a>
+        <a href="admin.html">Admin</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container max-w-md">
+      <h1 class="mb-3">Anmälan till TrelleMasters 2026</h1>
+
+      <!-- Registration status message (shown when registration is closed) -->
+      <div id="registration-status" class="hidden">
+        <div class="card">
+          <p id="registration-status-text" class="text-center text-lg"></p>
+        </div>
+      </div>
+
+      <!-- Registration form container (hidden when registration is closed) -->
+      <div id="registration-form-container" class="hidden">
+        <div class="card">
+          <form id="registration-form" novalidate>
+            <div class="form-group">
+              <label for="reg-name">Namn *</label>
+              <input type="text" id="reg-name" name="name" required minlength="2"
+                     placeholder="Ditt namn" autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label for="reg-handicap">Handicap *</label>
+              <input type="number" id="reg-handicap" name="handicap" required
+                     step="0.1" min="0" max="54"
+                     placeholder="T.ex. 27.7">
+            </div>
+
+            <div class="form-group">
+              <label for="reg-email">Email (frivilligt)</label>
+              <input type="email" id="reg-email" name="email"
+                     placeholder="din@email.se" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+              <label for="reg-phone">Telefon (frivilligt)</label>
+              <input type="text" id="reg-phone" name="phone"
+                     placeholder="070-1234567" autocomplete="tel">
+            </div>
+
+            <div class="form-group">
+              <label for="reg-code">Hemlig kod * <span class="text-muted text-sm">(fråga Henrik om du inte fått den)</span></label>
+              <input type="text" id="reg-code" name="code" required
+                     placeholder="Ange hemlig kod">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full">Skicka anmälan</button>
+          </form>
+
+          <!-- Error message -->
+          <div id="form-error" class="error-message hidden" style="margin-top: 1rem;"></div>
+        </div>
+
+        <!-- Success message -->
+        <div id="form-success" class="hidden">
+          <div class="card text-center">
+            <p class="text-lg font-semibold text-success">✅ Tack för din anmälan!</p>
+            <p class="mt-1 text-muted">Den väntar nu på godkännande av arrangören.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div id="registration-loading" class="card text-center">
+        <p class="text-muted">Laddar…</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>© 2026 TrelleMasters &mdash; Trelleborgs mest prestigefyllda trädgårdsturnering</p>
+  </footer>
+
+  <script type="module" src="js/registration.js"></script>
+</body>
+</html>

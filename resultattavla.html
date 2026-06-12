@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultattavla — TrelleMasters 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">⛳ TrelleMasters 2026</a>
+      <button class="hamburger" id="hamburger" aria-label="Meny">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Tävlingen</a></li>
+        <li><a href="registrera.html">Anmälan</a></li>
+        <li><a href="deltagare.html">Deltagare</a></li>
+        <li><a href="resultattavla.html" class="active">Resultattavla</a></li>
+        <li><a href="historik.html">Historik</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="flex-between mb-2">
+      <h1>⛳ Resultattavla</h1>
+      <div class="live-indicator" id="live-indicator">
+        <span class="live-dot"></span>
+        <span>Uppdateras live</span>
+      </div>
+    </div>
+
+    <div id="active-event-banner" class="card hidden" style="padding:0.75rem 1rem; margin-bottom:1rem; background:var(--color-accent-light); border:2px solid var(--color-accent);">
+      <strong>Pågående moment:</strong> <span id="active-event-name"></span>
+    </div>
+
+    <div id="loading" class="text-center text-light" style="padding:3rem 0;">
+      <p>Laddar resultattavla...</p>
+    </div>
+
+    <div id="error-state" class="hidden">
+      <div class="card" style="text-align:center; padding:2rem;">
+        <p class="error-message">Kunde inte ladda resultattavlan. Kontrollera Firebase-konfigurationen.</p>
+        <button class="btn btn-primary" onclick="location.reload()">Försök igen</button>
+      </div>
+    </div>
+
+    <div id="scoreboard-content" class="hidden">
+      <!-- Desktop table -->
+      <div class="card" id="desktop-scoreboard">
+        <div class="table-wrapper">
+          <table class="table" id="scoreboard-table">
+            <thead id="scoreboard-header"></thead>
+            <tbody id="scoreboard-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Mobile cards -->
+      <div id="mobile-scoreboard" class="hidden"></div>
+
+      <p class="text-center text-light mt-2" style="font-size:0.85rem;">
+        Poäng: 1 till N per moment (N = antal deltagare). Flest totalpoäng vinner!
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>TrelleMasters 2026 — En trädgårdsturnering av Henrik S</p>
+  </footer>
+
+  <script type="module" src="js/scoreboard.js"></script>
+</body>
+</html>

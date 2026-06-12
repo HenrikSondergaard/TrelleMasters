@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historik — TrelleMasters 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">⛳ TrelleMasters 2026</a>
+      <button class="hamburger" id="hamburger" aria-label="Meny">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Tävlingen</a></li>
+        <li><a href="registrera.html">Anmälan</a></li>
+        <li><a href="deltagare.html">Deltagare</a></li>
+        <li><a href="resultattavla.html">Resultattavla</a></li>
+        <li><a href="historik.html" class="active">Historik</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <h1>TrelleMasters 2025</h1>
+      <h2>Vinnare: Henrik S — 44 poäng 🏆</h2>
+      <p>Första upplagan av TrelleMasters hölls 2025 med 7 deltagare.</p>
+
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <h2>Resultat 2025</h2>
+        </div>
+        <div class="table-wrapper">
+          <table id="results-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Namn</th>
+                <th>Hcp</th>
+                <th>Putt</th>
+                <th>Chip</th>
+                <th>Hink</th>
+                <th>56m</th>
+                <th>124m</th>
+                <th>Drive</th>
+                <th>Scramble</th>
+                <th>Rolig</th>
+                <th>Totalt</th>
+              </tr>
+            </thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>TrelleMasters 2026 — En trädgårdsturnering av Henrik S</p>
+  </footer>
+
+  <script>
+    // Hamburger menu toggle
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('nav-links').classList.toggle('nav-open');
+    });
+
+    // Hardcoded 2025 results
+    const results2025 = [
+      { rank: 1, name: "Henrik S", hcp: 27.7, scores: { putt: 5, chip_spel: 7, chip_hink: 7, cttp_56: 7, cttp_124: 6, drive: 5, scramble: 7, roliga_skott: 0 }, total: 44 },
+      { rank: 2, name: "Pelle", hcp: 24.2, scores: { putt: 7, chip_spel: 3, chip_hink: 7, cttp_56: 6, cttp_124: 3, drive: 4, scramble: 5, roliga_skott: 0 }, total: 35 },
+      { rank: 3, name: "Nils", hcp: 46, scores: { putt: 3, chip_spel: 6, chip_hink: 5, cttp_56: 2, cttp_124: 4, drive: 7, scramble: 5, roliga_skott: 0 }, total: 32 },
+      { rank: 4, name: "André", hcp: 30, scores: { putt: 4, chip_spel: 4, chip_hink: 3, cttp_56: 5, cttp_124: 7, drive: 3, scramble: 3, roliga_skott: 0 }, total: 29 },
+      { rank: 4, name: "Johan", hcp: 40.8, scores: { putt: 1, chip_spel: 5, chip_hink: 5, cttp_56: 3, cttp_124: 2, drive: 6, scramble: 7, roliga_skott: 0 }, total: 29 },
+      { rank: 6, name: "Rickard", hcp: 32.9, scores: { putt: 6, chip_spel: 2, chip_hink: 3, cttp_56: 4, cttp_124: 5, drive: 2, scramble: 3, roliga_skott: 0 }, total: 25 },
+      { rank: 7, name: "Henrik L", hcp: 48, scores: { putt: 2, chip_spel: 2, chip_hink: 3, cttp_56: 1, cttp_124: 1, drive: 1, scramble: 1, roliga_skott: 0 }, total: 11 }
+    ];
+
+    function renderResults() {
+      const tbody = document.getElementById('results-body');
+      tbody.innerHTML = '';
+
+      results2025.forEach(function(player) {
+        const tr = document.createElement('tr');
+
+        // Leader (rank 1) gets gold highlight
+        if (player.rank === 1) {
+          tr.classList.add('leader');
+        }
+
+        // Rank cell — trophy emoji for #1
+        const rankText = player.rank === 1 ? '🏆 1' : player.rank;
+
+        // Name cell — champion badge for Henrik S
+        const nameText = player.name === 'Henrik S'
+          ? player.name + ' <span style="display:inline-block;background:var(--color-accent);color:var(--color-primary-dark);font-size:0.7rem;font-weight:700;padding:0.1rem 0.45rem;border-radius:50px;margin-left:0.4rem;vertical-align:middle;">Regerande mästare 🏆</span>'
+          : player.name;
+
+        tr.innerHTML =
+          '<td>' + rankText + '</td>' +
+          '<td>' + nameText + '</td>' +
+          '<td>' + player.hcp + '</td>' +
+          '<td>' + player.scores.putt + '</td>' +
+          '<td>' + player.scores.chip_spel + '</td>' +
+          '<td>' + player.scores.chip_hink + '</td>' +
+          '<td>' + player.scores.cttp_56 + '</td>' +
+          '<td>' + player.scores.cttp_124 + '</td>' +
+          '<td>' + player.scores.drive + '</td>' +
+          '<td>' + player.scores.scramble + '</td>' +
+          '<td>' + player.scores.roliga_skott + '</td>' +
+          '<td><strong>' + player.total + '</strong></td>';
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    renderResults();
+  </script>
+
+</body>
+</html>

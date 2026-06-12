@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — TrelleMasters 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">⛳ TrelleMasters 2026</a>
+      <button class="hamburger" id="hamburger" aria-label="Meny">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Tävlingen</a></li>
+        <li><a href="registrera.html">Anmälan</a></li>
+        <li><a href="deltagare.html">Deltagare</a></li>
+        <li><a href="resultattavla.html">Resultattavla</a></li>
+        <li><a href="historik.html">Historik</a></li>
+        <li><a href="admin.html" class="active">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- LOGIN SECTION -->
+    <section id="login-section">
+      <div class="card" style="max-width: 420px; margin: 3rem auto;">
+        <h2 class="text-center">🔒 Admin-inloggning</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" class="form-input" required placeholder="din@email.se">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Lösenord</label>
+            <input type="password" id="login-password" class="form-input" required placeholder="••••••••">
+          </div>
+          <div id="login-error" class="error-message hidden"></div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Logga in</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- DASHBOARD SECTION -->
+    <section id="dashboard-section" class="hidden">
+      <div class="flex-between mb-2">
+        <h1>Admin-dashboard</h1>
+        <button id="logout-btn" class="btn btn-secondary">Logga ut</button>
+      </div>
+
+      <!-- TAB NAVIGATION -->
+      <div class="admin-tabs">
+        <button class="tab-btn active" data-tab="registrations">Anmälningar</button>
+        <button class="tab-btn" data-tab="participants">Deltagare</button>
+        <button class="tab-btn" data-tab="scoring">Resultat</button>
+        <button class="tab-btn" data-tab="teams">Lag</button>
+        <button class="tab-btn" data-tab="settings">Inställningar</button>
+      </div>
+
+      <!-- TAB: ANMÄLNINGAR -->
+      <div class="tab-panel active" id="tab-registrations">
+        <div class="card">
+          <div class="card-header flex-between">
+            <h2>Väntande anmälningar</h2>
+            <span class="badge badge-pending" id="pending-count">0 anmälningar</span>
+          </div>
+          <div id="pending-list">
+            <p class="text-center text-light">Laddar...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: DELTAGARE -->
+      <div class="tab-panel" id="tab-participants">
+        <div class="card">
+          <div class="card-header flex-between">
+            <h2>Godkända deltagare</h2>
+            <button id="add-participant-btn" class="btn btn-accent">+ Lägg till manuellt</button>
+          </div>
+          <div id="add-participant-form" class="hidden" style="margin-bottom:1rem; padding:1rem; background:var(--color-bg); border-radius:8px;">
+            <div class="grid" style="grid-template-columns:1fr 1fr auto; gap:0.5rem; align-items:end;">
+              <div class="form-group" style="margin:0">
+                <label>Namn</label>
+                <input type="text" id="add-name" class="form-input" placeholder="Namn" required>
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>Handicap</label>
+                <input type="number" id="add-handicap" class="form-input" step="0.1" min="0" max="54" placeholder="Hcp" required>
+              </div>
+              <button id="add-participant-save" class="btn btn-primary">Lägg till</button>
+            </div>
+          </div>
+          <div id="approved-list">
+            <p class="text-center text-light">Laddar...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: RESULTAT -->
+      <div class="tab-panel" id="tab-scoring">
+        <div class="card">
+          <div class="card-header flex-between">
+            <h2>Poänginmatning</h2>
+            <select id="scoring-event-select" class="form-input" style="max-width:250px;">
+              <option value="">Välj moment...</option>
+            </select>
+          </div>
+          <div id="scoring-content">
+            <p class="text-center text-light">Välj ett moment för att mata in poäng.</p>
+          </div>
+          <div id="scoring-actions" class="hidden" style="margin-top:1rem;">
+            <button id="calculate-scores-btn" class="btn btn-accent">Beräkna och spara poäng</button>
+          </div>
+          <div id="scoring-result" class="hidden" style="margin-top:1rem;"></div>
+        </div>
+      </div>
+
+      <!-- TAB: LAG -->
+      <div class="tab-panel" id="tab-teams">
+        <div class="card">
+          <div class="card-header flex-between">
+            <h2>Scramble-lag</h2>
+            <div class="flex" style="gap:0.5rem; align-items:center;">
+              <label>Antal lag:</label>
+              <select id="num-teams-select" class="form-input" style="width:70px;">
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <button id="generate-teams-btn" class="btn btn-primary">Generera lag</button>
+            </div>
+          </div>
+          <div id="teams-content">
+            <p class="text-center text-light">Klicka på "Generera lag" för att skapa balanserade lag.</p>
+          </div>
+          <div id="teams-actions" class="hidden" style="margin-top:1rem;">
+            <button id="save-teams-btn" class="btn btn-accent">Spara lag</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: INSTÄLLNINGAR -->
+      <div class="tab-panel" id="tab-settings">
+        <div class="card">
+          <h2>Inställningar</h2>
+          <div class="form-group">
+            <label class="flex" style="gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="setting-registration-open">
+              <span>Anmälan öppen</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="setting-active-event">Aktivt moment</label>
+            <select id="setting-active-event" class="form-input">
+              <option value="">Inget</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="setting-secret-code">Hemlig anmälningskod</label>
+            <input type="text" id="setting-secret-code" class="form-input" placeholder="trelle2026">
+          </div>
+          <div class="flex" style="gap:0.5rem; margin-top:1rem;">
+            <button id="init-tournament-btn" class="btn btn-accent">Initiera tävling</button>
+            <button id="save-settings-btn" class="btn btn-primary">Spara inställningar</button>
+          </div>
+          <div id="settings-message" class="hidden" style="margin-top:1rem;"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>TrelleMasters 2026 — En trädgårdsturnering av Henrik S</p>
+  </footer>
+
+  <script type="module" src="js/admin-dashboard.js"></script>
+</body>
+</html>

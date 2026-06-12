@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deltagare – TrelleMasters 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">⛳</span>
+        <span>TrelleMasters 2026</span>
+      </a>
+      <button class="hamburger" aria-label="Öppna meny" aria-expanded="false">&#9776;</button>
+      <div class="nav-links">
+        <a href="index.html">Tävlingen</a>
+        <a href="registrera.html">Anmälan</a>
+        <a href="deltagare.html" class="active">Deltagare</a>
+        <a href="resultattavla.html">Resultattavla</a>
+        <a href="historik.html">Historik</a>
+        <a href="admin.html">Admin</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container max-w-lg">
+
+      <!-- Page header -->
+      <div class="flex flex-between flex-wrap gap-1 mb-3">
+        <h1>Deltagare</h1>
+        <div class="flex-center gap-1">
+          <span class="live-indicator">
+            <span class="live-dot"></span>
+            Live
+          </span>
+          <span id="participant-count" class="text-muted text-sm"></span>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div id="participants-loading" class="card text-center">
+        <p class="text-muted">Laddar deltagare…</p>
+      </div>
+
+      <!-- Error state -->
+      <div id="participants-error" class="card text-center hidden">
+        <p class="text-error">Kunde inte hämta deltagare. Kontrollera din anslutning och försök igen.</p>
+        <button id="retry-btn" class="btn btn-secondary btn-sm mt-2">Försök igen</button>
+      </div>
+
+      <!-- Approved participants (public list) -->
+      <div id="participants-section" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <h2>⛳ Godkända deltagare</h2>
+            <span id="approved-count" class="badge badge-approved"></span>
+          </div>
+          <div class="table-wrapper">
+            <table id="approved-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Namn</th>
+                  <th>Hcp</th>
+                  <th>Anmäld</th>
+                </tr>
+              </thead>
+              <tbody id="approved-body"></tbody>
+            </table>
+          </div>
+          <!-- Empty state when no approved participants -->
+          <p id="no-approved" class="text-center text-muted mt-2 hidden">
+            Inga godkända deltagare ännu. Håll utkik!
+          </p>
+        </div>
+
+        <!-- Pending participants (visible but marked as pending) -->
+        <div class="card mt-3">
+          <div class="card-header">
+            <h2>⏳ Väntar på godkännande</h2>
+            <span id="pending-count" class="badge badge-pending"></span>
+          </div>
+          <div class="table-wrapper">
+            <table id="pending-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Namn</th>
+                  <th>Hcp</th>
+                  <th>Anmäld</th>
+                </tr>
+              </thead>
+              <tbody id="pending-body"></tbody>
+            </table>
+          </div>
+          <!-- Empty state when no pending participants -->
+          <p id="no-pending" class="text-center text-muted mt-2 hidden">
+            Alla anmälningar är handlagda. 🎉
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>© 2026 TrelleMasters &mdash; Trelleborgs mest prestigefyllda trädgårdsturnering</p>
+  </footer>
+
+  <script type="module" src="js/participants.js"></script>
+</body>
+</html>
