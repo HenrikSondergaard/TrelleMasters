@@ -118,15 +118,16 @@ function escapeHtml(str) {
 // Realtidslyssnare – Godkända deltagare
 // -----------------------------------------------------------
 function listenApproved() {
+  // Sort client-side to avoid Firestore composite index requirement
   const q = query(
     collection(db, 'participants'),
-    where('status', '==', 'approved'),
-    orderBy('name')
+    where('status', '==', 'approved')
   );
 
   unsubscribeApproved = onSnapshot(q, (snap) => {
     const participants = [];
     snap.forEach((doc) => participants.push({ id: doc.id, ...doc.data() }));
+    participants.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'sv'));
 
     renderRows(approvedBody, participants);
     approvedCount.textContent = `${participants.length} st`;
@@ -149,15 +150,20 @@ function listenApproved() {
 // Realtidslyssnare – Väntande deltagare
 // -----------------------------------------------------------
 function listenPending() {
+  // Sort client-side to avoid Firestore composite index requirement
   const q = query(
     collection(db, 'participants'),
-    where('status', '==', 'pending'),
-    orderBy('registeredAt', 'desc')
+    where('status', '==', 'pending')
   );
 
   unsubscribePending = onSnapshot(q, (snap) => {
     const participants = [];
     snap.forEach((doc) => participants.push({ id: doc.id, ...doc.data() }));
+    participants.sort((a, b) => {
+      const ta = a.registeredAt?.seconds || 0;
+      const tb = b.registeredAt?.seconds || 0;
+      return tb - ta;
+    });
 
     renderRows(pendingBody, participants);
     pendingCount.textContent = `${participants.length} st`;

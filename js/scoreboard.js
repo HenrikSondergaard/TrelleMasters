@@ -41,11 +41,12 @@ let currentEvent = null;
 // LISTENERS
 // ============================================================
 
-// Participants (approved only)
+// Participants (approved only) — sort client-side
 onSnapshot(
-  query(collection(db, 'participants'), where('status', '==', 'approved'), orderBy('name')),
+  query(collection(db, 'participants'), where('status', '==', 'approved')),
   (snap) => {
     participants = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    participants.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'sv'));
     renderScoreboard();
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('scoreboard-content').classList.remove('hidden');
@@ -75,11 +76,12 @@ onSnapshot(
   () => {}
 );
 
-// Events list (for active event name)
+// Events list (for active event name) — sort client-side
 onSnapshot(
-  query(collection(db, 'events'), orderBy('order')),
+  collection(db, 'events'),
   (snap) => {
     events = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    events.sort((a, b) => (a.order || 0) - (b.order || 0));
     updateActiveEventBanner();
   },
   () => {}

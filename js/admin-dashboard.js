@@ -81,28 +81,37 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 // LISTENERS
 // ============================================================
 function startListeners() {
-  // Pending participants
+  // Pending participants — sort client-side
   unsubPending = onSnapshot(
-    query(collection(db, 'participants'), where('status', '==', 'pending'), orderBy('registeredAt', 'desc')),
-    (snap) => { renderPending(snap.docs); },
+    query(collection(db, 'participants'), where('status', '==', 'pending')),
+    (snap) => {
+      const docs = snap.docs.sort((a, b) => {
+        const ta = a.data().registeredAt?.seconds || 0;
+        const tb = b.data().registeredAt?.seconds || 0;
+        return tb - ta;
+      });
+      renderPending(docs);
+    },
     () => { document.getElementById('pending-list').innerHTML = '<p class="error-message">Kunde inte ladda anmälningar.</p>'; }
   );
 
-  // Approved participants
+  // Approved participants — sort client-side
   unsubApproved = onSnapshot(
-    query(collection(db, 'participants'), where('status', '==', 'approved'), orderBy('name')),
+    query(collection(db, 'participants'), where('status', '==', 'approved')),
     (snap) => {
       localParticipants = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      localParticipants.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'sv'));
       renderApproved();
     },
     () => { document.getElementById('approved-list').innerHTML = '<p class="error-message">Kunde inte ladda deltagare.</p>'; }
   );
 
-  // Events
+  // Events — sort client-side
   unsubEvents = onSnapshot(
-    query(collection(db, 'events'), orderBy('order')),
+    collection(db, 'events'),
     (snap) => {
       localEvents = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      localEvents.sort((a, b) => (a.order || 0) - (b.order || 0));
       populateEventDropdowns();
     },
     () => {}
