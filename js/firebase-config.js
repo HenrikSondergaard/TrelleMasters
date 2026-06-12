@@ -1,13 +1,10 @@
-// Firebase-konfiguration för TrelleMasters 2026
-// Ersätt värdena nedan med dina egna Firebase-projektuppgifter
-
 export const firebaseConfig = {
-  apiKey: 'DIN-API-KEY-HÄR',
-  authDomain: 'DITT-PROJEKT.firebaseapp.com',
-  projectId: 'DITT-PROJEKT',
-  storageBucket: 'DITT-PROJEKT.appspot.com',
-  messagingSenderId: '123456789',
-  appId: '1:123456789:web:abc123'
+  apiKey: "AIzaSyAlQMK9K_Z2uyHX9jVO7mmCbzUcGzvSEw4",
+  authDomain: "trellemasters.firebaseapp.com",
+  projectId: "trellemasters",
+  storageBucket: "trellemasters.firebasestorage.app",
+  messagingSenderId: "406653104689",
+  appId: "1:406653104689:web:ff492c127e0abee069db10"
 };
 
-export const ADMIN_UID = 'DITT-ADMIN-UID-HÄR';
+export const ADMIN_UID = "iqFrGCnFeaa3xjNapp2OhAHDPwx1";
