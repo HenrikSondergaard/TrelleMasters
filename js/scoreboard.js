@@ -128,7 +128,6 @@ function renderScoreboard() {
   leaderboard.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
 
   // Assign ranks with ties
-  let rank = 1;
   leaderboard.forEach((p, i) => {
     if (i > 0 && p.total === leaderboard[i - 1].total) {
       p.rank = leaderboard[i - 1].rank;

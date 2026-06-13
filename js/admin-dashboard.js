@@ -1,13 +1,13 @@
 // ============================================================
 // ADMIN DASHBOARD — TrelleMasters 2026
 // ============================================================
-import { auth, initAuth, login, logout } from './auth.js';
+import { initAuth, login, logout } from './auth.js';
 import {
   getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc,
   deleteDoc, addDoc, onSnapshot, query, where, serverTimestamp, writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { calculateTournamentPoints, calculateScramblePoints } from './scoring.js';
-import { generateTeams, recalculateAverages, movePlayerBetweenTeams } from './team-generator.js';
+import { generateTeams, movePlayerBetweenTeams } from './team-generator.js';
 
 const db = getFirestore();
 
@@ -27,7 +27,7 @@ let localEvents = [];
 // AUTH
 // ============================================================
 initAuth(
-  (user) => {
+  () => {
     document.getElementById('login-section').classList.add('hidden');
     document.getElementById('dashboard-section').classList.remove('hidden');
     startListeners();
