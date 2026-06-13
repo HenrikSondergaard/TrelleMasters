@@ -8,6 +8,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { calculateTournamentPoints, calculateScramblePoints } from './scoring.js';
 import { generateTeams, movePlayerBetweenTeams } from './team-generator.js';
+import { parseHandicap, formatHandicap } from './handicap-utils.js';
 
 const db = getFirestore();
 
@@ -169,7 +170,7 @@ function renderPending(docs) {
       <div class="card mb-2" style="padding:1rem;">
         <div class="flex-between">
           <div>
-            <strong>${esc(p.name)}</strong> <span class="text-light">(hcp ${p.handicap})</span><br>
+            <strong>${esc(p.name)}</strong> <span class="text-light">(hcp ${formatHandicap(p.handicap)})</span><br>
             <small class="text-light">${esc(p.email || '—')} | ${esc(p.phone || '—')} | ${date}</small>
           </div>
           <div class="flex" style="gap:0.5rem;">
@@ -210,7 +211,7 @@ function renderApproved() {
     <tbody>${localParticipants.map(p => `
       <tr id="row-${p.id}">
         <td class="participant-name">${esc(p.name)}</td>
-        <td class="participant-hcp">${p.handicap}</td>
+        <td class="participant-hcp">${formatHandicap(p.handicap)}</td>
         <td>
           <button class="btn btn-sm btn-secondary edit-btn" data-id="${p.id}">Redigera</button>
           <button class="btn btn-sm btn-danger delete-btn" data-id="${p.id}">Ta bort</button>
@@ -218,7 +219,7 @@ function renderApproved() {
       </tr>
       <tr id="edit-${p.id}" class="hidden">
         <td><input type="text" class="form-input edit-name" value="${esc(p.name)}"></td>
-        <td><input type="number" class="form-input edit-hcp" step="0.1" min="0" max="54" value="${p.handicap}"></td>
+        <td><input type="text" class="form-input edit-hcp" inputmode="decimal" value="${formatHandicap(p.handicap)}"></td>
         <td>
           <button class="btn btn-sm btn-primary save-edit-btn" data-id="${p.id}">Spara</button>
           <button class="btn btn-sm btn-secondary cancel-edit-btn" data-id="${p.id}">Avbryt</button>
@@ -245,12 +246,12 @@ function renderApproved() {
     btn.addEventListener('click', async () => {
       const row = document.getElementById('edit-' + btn.dataset.id);
       const name = row.querySelector('.edit-name').value.trim();
-      const hcp = parseFloat(row.querySelector('.edit-hcp').value);
-      if (name.length < 2 || isNaN(hcp) || hcp < 0 || hcp > 54) {
-        alert('Ogiltiga värden. Kontrollera namn (min 2 tecken) och handicap (0–54).');
+      const hcpResult = parseHandicap(row.querySelector('.edit-hcp').value);
+      if (name.length < 2 || !hcpResult.ok) {
+        alert('Ogiltiga värden. Kontrollera namn (min 2 tecken) och handicap.');
         return;
       }
-      await updateDoc(doc(db, 'participants', btn.dataset.id), { name, handicap: hcp });
+      await updateDoc(doc(db, 'participants', btn.dataset.id), { name, handicap: hcpResult.value });
     });
   });
 
@@ -271,13 +272,13 @@ document.getElementById('add-participant-btn').addEventListener('click', () => {
 
 document.getElementById('add-participant-save').addEventListener('click', async () => {
   const name = document.getElementById('add-name').value.trim();
-  const hcp = parseFloat(document.getElementById('add-handicap').value);
-  if (name.length < 2 || isNaN(hcp) || hcp < 0 || hcp > 54) {
+  const hcpResult = parseHandicap(document.getElementById('add-handicap').value);
+  if (name.length < 2 || !hcpResult.ok) {
     alert('Ogiltiga värden.');
     return;
   }
   await addDoc(collection(db, 'participants'), {
-    name, handicap: hcp, status: 'approved', registeredAt: serverTimestamp(),
+    name, handicap: hcpResult.value, status: 'approved', registeredAt: serverTimestamp(),
     email: '', phone: ''
   });
   document.getElementById('add-name').value = '';
@@ -351,7 +352,7 @@ function renderIndividualScoring(container, ev) {
       <tbody>${localParticipants.map(p => `
         <tr>
           <td>${esc(p.name)}</td>
-          <td>${p.handicap}</td>
+          <td>${formatHandicap(p.handicap)}</td>
           <td><input type="number" class="form-input score-input" data-pid="${p.id}" style="width:80px;" step="any"></td>
           <td><input type="checkbox" class="dnp-checkbox" data-pid="${p.id}"></td>
         </tr>
@@ -656,11 +657,11 @@ function renderTeams() {
         <div class="form-group" style="margin-bottom:0.5rem;">
           <input type="text" class="form-input team-name" data-idx="${ti}" value="${esc(team.name)}" style="font-weight:bold;">
         </div>
-        <p class="text-light" style="font-size:0.85rem;">Snitt hcp: <strong>${(team.averageHandicap || 0).toFixed(1)}</strong></p>
+        <p class="text-light" style="font-size:0.85rem;">Snitt hcp: <strong>${formatHandicap(team.averageHandicap)}</strong></p>
         <ul style="list-style:none; padding:0; margin:0.5rem 0 0;">
           ${team.members.map((m, mi) => `
             <li class="flex-between" style="padding:0.3rem 0; border-bottom:1px solid var(--color-bg);">
-              <span>${esc(m.name)} <small class="text-light">(${m.handicap})</small></span>
+              <span>${esc(m.name)} <small class="text-light">(${formatHandicap(m.handicap)})</small></span>
               <select class="form-input move-select" data-team="${ti}" data-member="${mi}" style="width:auto; padding:2px;">
                 <option value="">Flytta...</option>
                 ${localTeams.map((_, oi) => `<option value="${oi}" ${oi === ti ? 'disabled' : ''}>→ ${localTeams[oi].name}</option>`).join('')}

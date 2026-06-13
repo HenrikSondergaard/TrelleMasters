@@ -11,6 +11,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 import { firebaseConfig } from './firebase-config.js';
+import { formatHandicap } from './handicap-utils.js';
 
 // -----------------------------------------------------------
 // DOM-element
@@ -87,9 +88,9 @@ function renderRows(tbody, participants) {
   participants.forEach((p, i) => {
     const tr = document.createElement('tr');
 
-    // Hcp display — one decimal
+    // Hcp display — one decimal, plus-handicap aware
     const hcpStr = typeof p.handicap === 'number'
-      ? p.handicap.toFixed(1)
+      ? formatHandicap(p.handicap)
       : '—';
 
     tr.innerHTML =
