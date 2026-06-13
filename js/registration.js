@@ -185,6 +185,7 @@ formEl.addEventListener('submit', async (e) => {
     // 5. Visa bekräftelse
     hideEl(formContainerEl);
     showEl(formSuccessEl);
+    showSplash(name);
 
   } catch (err) {
     console.error('Kunde inte skicka anmälan:', err);
@@ -196,6 +197,84 @@ formEl.addEventListener('submit', async (e) => {
 function resetButton(btn) {
   btn.disabled = false;
   btn.textContent = 'Skicka anmälan';
+}
+
+// -----------------------------------------------------------
+// Splash / bekräftelsesida
+// -----------------------------------------------------------
+const SPLASH_QUOTES = [
+  '"Golf är en promenad förstörd av en liten boll." — Okänd',
+  '"Ju sämre man spelar, desto roligare är det." — Arnold Palmer',
+  '"Golf består av att puttja, anfalla, klia och springa." — Okänd',
+  '"Det finns två sorters golf: golf och links-golf." — Old Tom Morris',
+  '"Träna din korta putt — allting annat är tur." — Gary Player',
+  '"Tålmodighet i golf är en dygd — och i TrelleMasters en nödvändighet."',
+  '"Den som har roligast vinner. Eller förlorar. Minns ej."',
+  '"Ingen stress — vi spelar i trädgården!"',
+];
+
+const TOURNAMENT_DATE = new Date('2026-07-11T11:00:00');
+
+function showSplash(playerName) {
+  // Set player name
+  const nameEl = document.getElementById('splash-name');
+  if (nameEl && playerName) {
+    nameEl.textContent = `Välkommen till banan, ${playerName}!`;
+  }
+
+  // Random quote
+  const quoteEl = document.getElementById('splash-quote');
+  if (quoteEl) {
+    quoteEl.textContent = SPLASH_QUOTES[Math.floor(Math.random() * SPLASH_QUOTES.length)];
+  }
+
+  // Countdown
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Confetti
+  launchConfetti();
+}
+
+function updateCountdown() {
+  const el = document.getElementById('splash-countdown');
+  if (!el) return;
+
+  const now = new Date();
+  const diff = TOURNAMENT_DATE - now;
+
+  if (diff <= 0) {
+    el.textContent = '🚀 Det är tävlingsdag!';
+    return;
+  }
+
+  const days    = Math.floor(diff / 86400000);
+  const hours   = Math.floor((diff % 86400000) / 3600000);
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+
+  el.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+function launchConfetti() {
+  const container = document.getElementById('confetti-container');
+  if (!container) return;
+
+  const colors = ['#2d5a27', '#d4a843', '#4a8a42', '#e63946', '#f0d68a', '#27ae60'];
+  const numPieces = 40;
+
+  for (let i = 0; i < numPieces; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 0.8 + 's';
+    piece.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+    container.appendChild(piece);
+
+    // Remove after animation completes
+    setTimeout(() => piece.remove(), 4500);
+  }
 }
 
 // -----------------------------------------------------------
