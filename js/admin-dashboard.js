@@ -4,7 +4,7 @@
 import { auth, initAuth, login, logout } from './auth.js';
 import {
   getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc,
-  deleteDoc, addDoc, onSnapshot, query, where, orderBy, serverTimestamp, writeBatch
+  deleteDoc, addDoc, onSnapshot, query, where, serverTimestamp, writeBatch
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { calculateTournamentPoints, calculateScramblePoints } from './scoring.js';
 import { generateTeams, recalculateAverages, movePlayerBetweenTeams } from './team-generator.js';

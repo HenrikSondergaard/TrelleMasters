@@ -3,7 +3,7 @@
 // ============================================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
-  getFirestore, collection, doc, onSnapshot, query, orderBy, getDocs
+  getFirestore, collection, doc, onSnapshot, query, where, getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { firebaseConfig } from './firebase-config.js';
 

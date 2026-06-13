@@ -7,8 +7,7 @@ import {
   collection,
   query,
   where,
-  onSnapshot,
-  orderBy
+  onSnapshot
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 import { firebaseConfig } from './firebase-config.js';

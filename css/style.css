@@ -196,7 +196,8 @@ textarea {
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .nav-open .nav-links {
+  .nav-open .nav-links,
+  .nav-links.nav-open {
     max-height: 400px;
     padding: 0.5rem 0;
   }
