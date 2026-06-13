@@ -24,19 +24,19 @@ export function calculateTournamentPoints(entries, N, scoreDirection) {
   }
 
   // Assign ranks with ties (same score → same rank)
-  const ranked = competing.map((entry, idx) => {
+  // Must use a loop, not .map(), because we reference previous element
+  const ranked = [];
+  for (let idx = 0; idx < competing.length; idx++) {
+    const entry = competing[idx];
+    let rank;
     if (idx === 0) {
-      return { ...entry, rank: 1 };
+      rank = 1;
+    } else {
+      const prev = ranked[idx - 1];
+      rank = entry.rawScore === prev.rawScore ? prev.rank : idx + 1;
     }
-    const prev = ranked[idx - 1];
-    const sameScore = (scoreDirection === 'higher_is_better')
-      ? entry.rawScore === prev.rawScore
-      : entry.rawScore === prev.rawScore;
-    return {
-      ...entry,
-      rank: sameScore ? prev.rank : idx + 1
-    };
-  });
+    ranked.push({ ...entry, rank });
+  }
 
   // Convert rank → tournament points: N - rank + 1 (tied entries all get higher points)
   const results = ranked.map(entry => ({
@@ -107,7 +107,10 @@ export function calculateScramblePoints(teams, N) {
   }
 
   // Assign ranks with ties (same scrambleResult → same rank, same points)
-  const results = sorted.map((team, idx) => {
+  // Must use a loop, not .map(), because we reference previous element
+  const results = [];
+  for (let idx = 0; idx < sorted.length; idx++) {
+    const team = sorted[idx];
     let rank;
     if (idx === 0) {
       rank = 1;
@@ -119,12 +122,12 @@ export function calculateScramblePoints(teams, N) {
     // Points for tied teams: use the higher points value (points of the earliest rank in the tie group)
     const points = pointsTable[rank - 1];
 
-    return {
+    results.push({
       ...team,
       scrambleRank: rank,
       scramblePoints: points
-    };
-  });
+    });
+  }
 
   return results;
 }
