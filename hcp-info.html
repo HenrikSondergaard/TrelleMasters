@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hcp-fördelar – TrelleMasters 2026</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">⛳ TrelleMasters 2026</a>
+      <button class="hamburger" id="hamburger" aria-label="Meny">☰</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Tävlingen</a></li>
+        <li><a href="registrera.html">Anmälan</a></li>
+        <li><a href="deltagare.html">Deltagare</a></li>
+        <li><a href="resultattavla.html">Resultattavla</a></li>
+        <li><a href="historik.html">Historik</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container max-w-md">
+      <h1 class="mb-3 text-center">📊 Hcp-fördelar</h1>
+      <p class="text-center text-muted mb-3">
+        Alla ska ha en chans! Så här många försök du får i varje moment
+        baserat på din handicap.
+      </p>
+
+      <!-- HCP-kalkylator -->
+      <div class="card mb-3">
+        <label for="hcp-input">Testa din handicap</label>
+        <div style="display:flex; gap:0.5rem; align-items:flex-end;">
+          <input type="text" id="hcp-input" inputmode="decimal"
+                 placeholder="T.ex. 22.3 eller +2.4" style="flex:1;">
+          <button class="btn btn-primary" id="hcp-calc-btn">Visa</button>
+        </div>
+        <div id="hcp-result" class="mt-2"></div>
+      </div>
+
+      <!-- Tabeller renderas här -->
+      <div id="tables-container"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 TrelleMasters &mdash; Trelleborgs mest prestigefyllda trädgårdsturnering</p>
+  </footer>
+
+  <script type="module" src="js/hcp-info.js"></script>
+  <script>
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('nav-links').classList.toggle('nav-open');
+    });
+  </script>
+
+</body>
+</html>
