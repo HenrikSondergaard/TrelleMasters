@@ -9,6 +9,7 @@ import {
 import { calculateTournamentPoints, calculateScramblePoints } from './scoring.js';
 import { generateTeams, movePlayerBetweenTeams } from './team-generator.js';
 import { parseHandicap, formatHandicap } from './handicap-utils.js';
+import { checkAllEventsCompleted, buildHistorySnapshot } from './tournament-finalizer.js';
 
 const db = getFirestore();
 
@@ -791,6 +792,86 @@ document.getElementById('init-tournament-btn').addEventListener('click', async (
   } catch (err) {
     msgEl.innerHTML = `<p class="error-message">Fel: ${err.message}</p>`;
     msgEl.classList.remove('hidden');
+  }
+});
+
+// ============================================================
+// FINALIZE TOURNAMENT
+// ============================================================
+document.getElementById('finalize-tournament-btn').addEventListener('click', async () => {
+  const msgEl = document.getElementById('finalize-message');
+
+  // 1. Check all events completed
+  const { allCompleted, incomplete } = checkAllEventsCompleted(localEvents);
+  if (!allCompleted) {
+    msgEl.innerHTML = `<p class="error-message">Kan inte avsluta — följande moment saknar resultat: <strong>${incomplete.join(', ')}</strong></p>`;
+    msgEl.classList.remove('hidden');
+    return;
+  }
+
+  if (localParticipants.length === 0) {
+    msgEl.innerHTML = '<p class="error-message">Inga godkända deltagare — kan inte avsluta.</p>';
+    msgEl.classList.remove('hidden');
+    return;
+  }
+
+  // 2. Confirmation — this is hard to undo
+  const confirmed = confirm(
+    `Är du säker på att du vill avsluta tävlingen?\n\n` +
+    `Detta sparar en slutgiltig snapshot av resultatet i historiken ` +
+    `och stänger anmälan permanent.\n\n` +
+    `Deltagare: ${localParticipants.length}\n` +
+    `Slutgiltig vinnare kommer att arkiveras.\n\n` +
+    `DETTA GÅR INTE ATT ÅNGRA.`
+  );
+  if (!confirmed) return;
+
+  const btn = document.getElementById('finalize-tournament-btn');
+  btn.disabled = true;
+  btn.textContent = 'Avslutar...';
+  msgEl.classList.add('hidden');
+
+  try {
+    // 3. Fetch all scores
+    const scoresSnap = await getDocs(collection(db, 'scores'));
+    const allScores = scoresSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    // 4. Fetch settings
+    const settingsSnap = await getDoc(doc(db, 'settings', 'tournament'));
+    const settings = settingsSnap.exists() ? settingsSnap.data() : {};
+
+    // 5. Build the history snapshot
+    const snapshot = buildHistorySnapshot(allScores, localParticipants, {
+      year: settings.year || new Date().getFullYear(),
+      date: settings.date || new Date().toISOString().split('T')[0]
+    });
+
+    // 6. Save to history/{year} + close registration
+    const batch = writeBatch(db);
+    batch.set(doc(db, 'history', String(snapshot.year)), {
+      ...snapshot,
+      completedAt: serverTimestamp()
+    });
+    batch.set(doc(db, 'settings', 'tournament'), {
+      registrationOpen: false
+    }, { merge: true });
+
+    await batch.commit();
+
+    msgEl.innerHTML =
+      `<div class="success-message">` +
+      `<p><strong>✅ Tävlingen avslutad!</strong></p>` +
+      `<p>Slutresultatet har sparats i historiken för ${snapshot.year}.</p>` +
+      `<p>Vinnare: <strong>${snapshot.winner || '—'}</strong> (${snapshot.participantCount} deltagare)</p>` +
+      `<p class="text-light" style="margin-top:0.5rem;">Anmälan har stängts automatiskt.</p>` +
+      `</div>`;
+    msgEl.classList.remove('hidden');
+    btn.textContent = 'Tävling avslutad';
+  } catch (err) {
+    msgEl.innerHTML = `<p class="error-message">Kunde inte avsluta: ${err.message}</p>`;
+    msgEl.classList.remove('hidden');
+    btn.disabled = false;
+    btn.textContent = '🏁 Avsluta tävling';
   }
 });
 
