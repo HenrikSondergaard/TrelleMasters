@@ -70,6 +70,22 @@ describe('generateTeams', () => {
     expect(teams[0].name).toBe('Lag 1')
     expect(teams[1].name).toBe('Lag 2')
   })
+
+  it('plus-handicap (-2.4) sorteras som starkast spelare', () => {
+    // +2.4 (stored as -2.4) ska vara först i serpentine-draft
+    const players = [
+      { id: 1, name: 'Regular', handicap: 22.3 },
+      { id: 2, name: 'Scratch', handicap: 0 },
+      { id: 3, name: 'Plus',    handicap: -2.4 },
+      { id: 4, name: 'High',    handicap: 36 },
+    ]
+    const teams = generateTeams(players, 2)
+    // Sorted ASC: Plus(-2.4), Scratch(0), Regular(22.3), High(36)
+    // Round 1 forward: Plus→Lag1, Scratch→Lag2
+    // Round 2 reverse: Regular→Lag2, High→Lag1
+    expect(teams[0].members.map(m => m.name)).toEqual(['Plus', 'High'])
+    expect(teams[1].members.map(m => m.name)).toEqual(['Scratch', 'Regular'])
+  })
 })
 
 // ─── recalculateAverages ──────────────────────────────────────────────────────

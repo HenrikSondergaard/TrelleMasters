@@ -51,9 +51,10 @@
 
             <div class="form-group">
               <label for="reg-handicap">Handicap *</label>
-              <input type="number" id="reg-handicap" name="handicap" required
-                     step="0.1" min="0" max="54"
-                     placeholder="T.ex. 27.7">
+              <input type="text" id="reg-handicap" name="handicap" required
+                     inputmode="decimal"
+                     placeholder="T.ex. 27.7 eller +2.4">
+              <small class="text-muted">Plus-handicap? Skriv + framför, t.ex. +2.4</small>
             </div>
 
             <div class="form-group">

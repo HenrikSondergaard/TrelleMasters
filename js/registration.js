@@ -12,6 +12,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 import { firebaseConfig } from './firebase-config.js';
+import { parseHandicap } from './handicap-utils.js';
 
 // -----------------------------------------------------------
 // DOM-element
@@ -71,7 +72,7 @@ function clearFormError() {
  */
 function validateForm() {
   const name     = nameInput.value.trim();
-  const handicap = handicapInput.value;
+  const handicapStr = handicapInput.value;
   const email    = emailInput.value.trim();
   const code     = codeInput.value.trim();
 
@@ -79,13 +80,9 @@ function validateForm() {
     return 'Namn måste vara minst 2 tecken.';
   }
 
-  if (handicap === '' || isNaN(Number(handicap))) {
-    return 'Handicap måste anges som ett nummer.';
-  }
-
-  const hcpNum = parseFloat(handicap);
-  if (hcpNum < 0 || hcpNum > 54) {
-    return 'Handicap måste vara mellan 0 och 54.';
+  const hcpResult = parseHandicap(handicapStr);
+  if (!hcpResult.ok) {
+    return hcpResult.error;
   }
 
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -145,7 +142,8 @@ formEl.addEventListener('submit', async (e) => {
   }
 
   const name     = nameInput.value.trim();
-  const handicap = parseFloat(handicapInput.value);
+  const hcpResult = parseHandicap(handicapInput.value);
+  const handicap = hcpResult.value;
   const email    = emailInput.value.trim();
   const phone    = phoneInput.value.trim();
   const code     = codeInput.value.trim();
