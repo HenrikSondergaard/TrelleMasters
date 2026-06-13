@@ -81,30 +81,31 @@
           <!-- Error message -->
           <div id="form-error" class="error-message hidden" style="margin-top: 1rem;"></div>
         </div>
+      </div>
 
-        <!-- Success splash page -->
-        <div id="form-success" class="hidden">
-          <div class="splash">
-            <!-- Confetti container -->
-            <div id="confetti-container" class="confetti-container" aria-hidden="true"></div>
+      <!-- Success splash page — måste vara UTANFÖR #registration-form-container
+           eftersom JS döljer hela containern med display:none innan splash visas -->
+      <div id="form-success" class="hidden">
+        <div class="splash">
+          <!-- Confetti container -->
+          <div id="confetti-container" class="confetti-container" aria-hidden="true"></div>
 
-            <div class="splash-content">
-              <div class="splash-trophy">🏆</div>
-              <h2 class="splash-title">Du är anmäld!</h2>
-              <p id="splash-name" class="splash-name"></p>
-              <p class="splash-subtitle">TrelleMasters 2026 väntar — vi ses på tee!</p>
+          <div class="splash-content">
+            <div class="splash-trophy">🏆</div>
+            <h2 class="splash-title">Du är anmäld!</h2>
+            <p id="splash-name" class="splash-name"></p>
+            <p class="splash-subtitle">TrelleMasters 2026 väntar — vi ses på tee!</p>
 
-              <div class="splash-countdown">
-                <p class="splash-countdown-label">Tävlingen börjar om</p>
-                <p id="splash-countdown" class="splash-countdown-timer"></p>
-              </div>
+            <div class="splash-countdown">
+              <p class="splash-countdown-label">Tävlingen börjar om</p>
+              <p id="splash-countdown" class="splash-countdown-timer"></p>
+            </div>
 
-              <div class="splash-quote" id="splash-quote"></div>
+            <div class="splash-quote" id="splash-quote"></div>
 
-              <div class="splash-actions">
-                <a href="deltagare.html" class="btn btn-primary">Se andra anmälda ⛳</a>
-                <a href="index.html" class="btn btn-secondary">Tillbaka till startsidan</a>
-              </div>
+            <div class="splash-actions">
+              <a href="deltagare.html" class="btn btn-primary">Se andra anmälda ⛳</a>
+              <a href="index.html" class="btn btn-secondary">Tillbaka till startsidan</a>
             </div>
           </div>
         </div>
