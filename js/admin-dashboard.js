@@ -10,7 +10,6 @@ import { calculateTournamentPoints, calculateScramblePoints } from './scoring.js
 import { generateTeams, movePlayerBetweenTeams } from './team-generator.js';
 import { parseHandicap, formatHandicap } from './handicap-utils.js';
 import { checkAllEventsCompleted, buildHistorySnapshot } from './tournament-finalizer.js';
-import { FALLBACK_HISTORY_2025 } from './historik-data.js';
 
 const db = getFirestore();
 
@@ -793,48 +792,6 @@ document.getElementById('init-tournament-btn').addEventListener('click', async (
   } catch (err) {
     msgEl.innerHTML = `<p class="error-message">Fel: ${err.message}</p>`;
     msgEl.classList.remove('hidden');
-  }
-});
-
-// ============================================================
-// MIGRATE 2025 HISTORY TO FIRESTORE
-// ============================================================
-document.getElementById('migrate-2025-btn').addEventListener('click', async () => {
-  const msgEl = document.getElementById('migrate-2025-message');
-  const btn = document.getElementById('migrate-2025-btn');
-  msgEl.classList.add('hidden');
-
-  try {
-    // Kontrollera om 2025 redan finns i Firestore
-    const existing = await getDoc(doc(db, 'history', '2025'));
-    if (existing.exists()) {
-      const overwrite = confirm(
-        '2025 finns redan i Firestore.\n\nVill du skriva över med den hårdkodade datan?'
-      );
-      if (!overwrite) return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Migrerar...';
-
-    // Skriv FALLBACK_HISTORY_2025 till history/2025
-    await setDoc(doc(db, 'history', '2025'), {
-      ...FALLBACK_HISTORY_2025,
-      migratedAt: serverTimestamp()
-    });
-
-    msgEl.innerHTML =
-      '<p class="success-message"><strong>✅ Migrerat!</strong> ' +
-      '2025-resultaten har skrivits till Firestore (history/2025). ' +
-      'Historik-sidan hämtar nu datan dynamiskt.</p>';
-    msgEl.classList.remove('hidden');
-    btn.textContent = '📦 Migrera 2025 till Firestore';
-    btn.disabled = false;
-  } catch (err) {
-    msgEl.innerHTML = `<p class="error-message">Kunde inte migrera: ${err.message}</p>`;
-    msgEl.classList.remove('hidden');
-    btn.textContent = '📦 Migrera 2025 till Firestore';
-    btn.disabled = false;
   }
 });
 
