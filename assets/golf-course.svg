@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 760" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Golfbana i sommarljus">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6cc0e0"/>
+      <stop offset="0.55" stop-color="#b6e2ee"/>
+      <stop offset="1" stop-color="#e9f6ec"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff8dd"/>
+      <stop offset="0.45" stop-color="#ffe9a8" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fairway" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7cc568"/>
+      <stop offset="1" stop-color="#4d9b41"/>
+    </linearGradient>
+    <clipPath id="fwclip">
+      <path d="M0,505 C 380,455 1060,455 1440,505 L1440,760 L0,760 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1440" height="540" fill="url(#sky)"/>
+
+  <!-- Sun -->
+  <circle cx="1185" cy="150" r="200" fill="url(#sun)"/>
+  <circle cx="1185" cy="150" r="60" fill="#fff3c6"/>
+
+  <!-- Clouds -->
+  <g fill="#ffffff">
+    <g transform="translate(250,138)" opacity="0.9">
+      <ellipse cx="0" cy="0" rx="60" ry="26"/>
+      <ellipse cx="48" cy="8" rx="46" ry="22"/>
+      <ellipse cx="-46" cy="10" rx="42" ry="20"/>
+    </g>
+    <g transform="translate(760,96)" opacity="0.8">
+      <ellipse cx="0" cy="0" rx="52" ry="22"/>
+      <ellipse cx="44" cy="6" rx="38" ry="18"/>
+      <ellipse cx="-42" cy="8" rx="34" ry="16"/>
+    </g>
+  </g>
+
+  <!-- Distant hills -->
+  <path d="M0,430 C 280,372 560,452 860,402 C 1100,362 1320,430 1440,408 L1440,540 L0,540 Z" fill="#c2e3a8"/>
+  <!-- Mid hills -->
+  <path d="M0,476 C 320,430 700,506 1040,448 C 1260,412 1380,486 1440,470 L1440,560 L0,560 Z" fill="#a3d589"/>
+
+  <!-- Fairway -->
+  <path d="M0,505 C 380,455 1060,455 1440,505 L1440,760 L0,760 Z" fill="url(#fairway)"/>
+  <!-- Mowing stripes (perspective fan toward a vanishing point) -->
+  <g clip-path="url(#fwclip)" fill="#69b657" opacity="0.55">
+    <polygon points="720,468 -300,760 -120,760"/>
+    <polygon points="720,468 70,760 360,760"/>
+    <polygon points="720,468 470,760 690,760"/>
+    <polygon points="720,468 960,760 1180,760"/>
+    <polygon points="720,468 1320,760 1640,760"/>
+  </g>
+
+  <!-- Bunker -->
+  <ellipse cx="345" cy="576" rx="138" ry="42" fill="#efe1b4"/>
+  <ellipse cx="345" cy="576" rx="138" ry="42" fill="none" stroke="#e0cd92" stroke-width="3"/>
+  <ellipse cx="345" cy="569" rx="110" ry="29" fill="#f6edc8"/>
+
+  <!-- Putting green -->
+  <ellipse cx="1000" cy="588" rx="210" ry="64" fill="#54a747"/>
+  <ellipse cx="1000" cy="582" rx="170" ry="48" fill="#5cb14e"/>
+  <!-- Hole -->
+  <ellipse cx="1036" cy="566" rx="9" ry="4.5" fill="#23391c"/>
+  <!-- Flagstick + flag -->
+  <rect x="1034" y="444" width="4" height="124" rx="2" fill="#fbfbfb"/>
+  <path d="M1038,447 L1104,465 L1038,483 Z" fill="#e63946"/>
+
+  <!-- Trees -->
+  <g>
+    <rect x="111" y="430" width="16" height="74" rx="6" fill="#7a5230"/>
+    <circle cx="119" cy="408" r="48" fill="#3f8f3a"/>
+    <circle cx="89" cy="430" r="35" fill="#4aa044"/>
+    <circle cx="151" cy="430" r="35" fill="#469a40"/>
+  </g>
+  <g>
+    <rect x="1327" y="452" width="13" height="60" rx="5" fill="#7a5230"/>
+    <circle cx="1333" cy="434" r="40" fill="#3f8f3a"/>
+    <circle cx="1357" cy="452" r="29" fill="#4aa044"/>
+    <circle cx="1309" cy="452" r="27" fill="#469a40"/>
+  </g>
+</svg>
