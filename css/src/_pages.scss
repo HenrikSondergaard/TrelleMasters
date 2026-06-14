@@ -78,7 +78,7 @@
 //  FRONT-PAGE SECTIONS & MOMENT GRID
 // ============================================================
 .section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.75rem;
 }
 
 .section h2 {
@@ -87,15 +87,63 @@
   margin-bottom: 1rem;
 }
 
+// Front-page card headings (Schema, Kom ihåg, Poängsystem) in golf green
+.section .card h2 {
+  color: var(--color-primary);
+  font-size: 1.3rem;
+}
+
+// Standalone, centred section heading ("Tävlingsmoment") with a fairway underline
+.section > h2.text-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  margin-bottom: 0.4rem;
+}
+
+.section > h2.text-center::after {
+  content: '';
+  width: 76px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-accent);
+}
+
+// "Se hur många försök…" intro link rendered as a soft pill
+.link-pill {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-mint);
+  border: 1px solid rgba(45, 90, 39, 0.15);
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color var(--transition), color var(--transition),
+    transform var(--transition), box-shadow var(--transition);
+}
+
+.link-pill:hover,
+.link-pill:focus {
+  background: var(--color-accent-light);
+  color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+// Checklist with circular golf-mint check badges
 .packlist {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.55rem;
   margin-top: 0.5rem;
 }
 
 .packlist li {
-  padding-left: 1.6rem;
+  padding-left: 2rem;
   position: relative;
 }
 
@@ -103,25 +151,57 @@
   content: '✓';
   position: absolute;
   left: 0;
-  top: 0;
-  width: 1.1rem;
-  height: 1.1rem;
-  color: var(--color-primary-light);
+  top: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--color-mint);
+  color: var(--color-primary);
+  font-size: 0.8rem;
   font-weight: 700;
 }
 
+// ----- Moment grid: golf-tile cards -----
 .moments-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(244px, 1fr));
+  gap: 1.1rem;
 }
 
 .moment-card {
-  padding: 1.35rem;
+  position: relative;
+  padding: 1.5rem 1.35rem 1.35rem;
   margin-bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
+  overflow: hidden;
+}
+
+// Fairway accent bar that sweeps in on hover
+.moment-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-fairway);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition);
+}
+
+.moment-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 168, 67, 0.5);
+}
+
+.moment-card:hover::before {
+  transform: scaleX(1);
 }
 
 .moment-card h3 {
@@ -137,15 +217,44 @@
 }
 
 .moment-card small {
-  font-size: 0.8rem;
+  align-self: flex-start;
   margin-top: auto;
-  padding-top: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  color: var(--color-text-light);
 }
 
+// Emoji presented like a ball on a tee
 .moment-emoji {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 0.35rem;
+  font-size: 1.8rem;
+  line-height: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, var(--color-mint));
+  border: 1px solid rgba(45, 90, 39, 0.12);
+  box-shadow: var(--shadow-sm);
+}
+
+// Highlighted scoring card (gold)
+.highlight-card {
+  background: linear-gradient(135deg, #fffaf0 0%, #fbeecb 100%);
+  border: 1px solid var(--color-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.highlight-card h2 {
+  color: var(--color-accent-dark) !important;
+}
+
+.highlight-card strong {
+  color: var(--color-primary-dark);
 }
 
 @include small-mobile {
