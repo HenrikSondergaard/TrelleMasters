@@ -128,6 +128,16 @@ function startListeners() {
         document.getElementById('setting-registration-open').checked = !!s.registrationOpen;
         document.getElementById('setting-secret-code').value = s.secretCode || '';
         document.getElementById('setting-active-event').value = s.currentEvent || '';
+
+        // Avaktivera finalize-knappen om tävlingen redan är avslutad
+        const finalizeBtn = document.getElementById('finalize-tournament-btn');
+        if (s.finalized) {
+          finalizeBtn.disabled = true;
+          finalizeBtn.textContent = '✅ Tävling avslutad';
+        } else {
+          finalizeBtn.disabled = false;
+          finalizeBtn.textContent = '🏁 Avsluta tävling';
+        }
       }
     },
     () => {}
@@ -801,6 +811,10 @@ document.getElementById('init-tournament-btn').addEventListener('click', async (
 document.getElementById('finalize-tournament-btn').addEventListener('click', async () => {
   const msgEl = document.getElementById('finalize-message');
 
+  // 0. Kontrollera att tävlingen inte redan är avslutad
+  const finalizeBtn = document.getElementById('finalize-tournament-btn');
+  if (finalizeBtn.disabled) return;
+
   // 1. Check all events completed
   const { allCompleted, incomplete } = checkAllEventsCompleted(localEvents);
   if (!allCompleted) {
@@ -820,15 +834,14 @@ document.getElementById('finalize-tournament-btn').addEventListener('click', asy
     `Är du säker på att du vill avsluta tävlingen?\n\n` +
     `Detta sparar en slutgiltig snapshot av resultatet i historiken ` +
     `och stänger anmälan permanent.\n\n` +
-    `Deltagare: ${localParticipants.length}\n` +
+    `Godkända deltagare: ${localParticipants.length}\n` +
     `Slutgiltig vinnare kommer att arkiveras.\n\n` +
     `DETTA GÅR INTE ATT ÅNGRA.`
   );
   if (!confirmed) return;
 
-  const btn = document.getElementById('finalize-tournament-btn');
-  btn.disabled = true;
-  btn.textContent = 'Avslutar...';
+  finalizeBtn.disabled = true;
+  finalizeBtn.textContent = 'Avslutar...';
   msgEl.classList.add('hidden');
 
   try {
@@ -853,7 +866,8 @@ document.getElementById('finalize-tournament-btn').addEventListener('click', asy
       completedAt: serverTimestamp()
     });
     batch.set(doc(db, 'settings', 'tournament'), {
-      registrationOpen: false
+      registrationOpen: false,
+      finalized: true
     }, { merge: true });
 
     await batch.commit();
@@ -862,16 +876,87 @@ document.getElementById('finalize-tournament-btn').addEventListener('click', asy
       `<div class="success-message">` +
       `<p><strong>✅ Tävlingen avslutad!</strong></p>` +
       `<p>Slutresultatet har sparats i historiken för ${snapshot.year}.</p>` +
-      `<p>Vinnare: <strong>${snapshot.winner || '—'}</strong> (${snapshot.participantCount} deltagare)</p>` +
+      `<p>Vinnare: <strong>${snapshot.winner || '—'}</strong> (${snapshot.participantCount} deltagare med resultat)</p>` +
       `<p class="text-light" style="margin-top:0.5rem;">Anmälan har stängts automatiskt.</p>` +
       `</div>`;
     msgEl.classList.remove('hidden');
-    btn.textContent = 'Tävling avslutad';
+    finalizeBtn.textContent = '✅ Tävling avslutad';
   } catch (err) {
     msgEl.innerHTML = `<p class="error-message">Kunde inte avsluta: ${err.message}</p>`;
     msgEl.classList.remove('hidden');
+    finalizeBtn.disabled = false;
+    finalizeBtn.textContent = '🏁 Avsluta tävling';
+  }
+});
+
+// ============================================================
+// DELETE ALL TOURNAMENT DATA
+// ============================================================
+document.getElementById('delete-data-btn').addEventListener('click', async () => {
+  const msgEl = document.getElementById('delete-data-message');
+  const btn = document.getElementById('delete-data-btn');
+  msgEl.classList.add('hidden');
+
+  // 1. Första bekräftelse
+  const confirmed = confirm(
+    'Detta raderar ALL tävlingsdata:\n\n' +
+    '• Alla deltagare\n' +
+    '• Alla resultat\n' +
+    '• Alla moment\n' +
+    '• Alla lag\n' +
+    '• Inställningar återställs\n\n' +
+    'DETTA GÅR INTE ATT ÅNGRA.\n\n' +
+    'Klicka OK för att fortsätta.'
+  );
+  if (!confirmed) return;
+
+  // 2. Andra bekräftelse — skriv RADERA
+  const typed = prompt('Bekräfta genom att skriva RADERA (stora bokstäver):');
+  if (typed !== 'RADERA') {
+    msgEl.innerHTML = '<p class="error-message">Radering avbruten — fel bekräftelse.</p>';
+    msgEl.classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Raderar...';
+  msgEl.classList.add('hidden');
+
+  try {
+    const collectionsToDelete = ['participants', 'scores', 'events', 'teams'];
+    let totalDeleted = 0;
+
+    for (const colName of collectionsToDelete) {
+      const snap = await getDocs(collection(db, colName));
+      if (snap.size === 0) continue;
+      const batch = writeBatch(db);
+      snap.docs.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+      totalDeleted += snap.size;
+      console.log(`[TrelleMasters] Raderade ${snap.size} dokument från ${colName}`);
+    }
+
+    // Återställ settings till standard
+    await setDoc(doc(db, 'settings', 'tournament'), {
+      registrationOpen: false,
+      currentEvent: '',
+      secretCode: '',
+      finalized: false
+    });
+
+    console.log(`[TrelleMasters] Totalt raderade ${totalDeleted} dokument. Inställningar återställda.`);
+    msgEl.innerHTML =
+      `<p class="success-message"><strong>✅ Raderat!</strong> ${totalDeleted} dokument ` +
+      `borttagna. Inställningar återställda till standard.</p>`;
+    msgEl.classList.remove('hidden');
+    btn.textContent = '🗑️ Radera all tävlingsdata';
     btn.disabled = false;
-    btn.textContent = '🏁 Avsluta tävling';
+  } catch (err) {
+    console.error('[TrelleMasters] Kunde inte radera:', err);
+    msgEl.innerHTML = `<p class="error-message">Kunde inte radera: ${err.message}</p>`;
+    msgEl.classList.remove('hidden');
+    btn.textContent = '🗑️ Radera all tävlingsdata';
+    btn.disabled = false;
   }
 });
 

@@ -9,8 +9,7 @@ import { firebaseConfig } from './firebase-config.js';
 import {
   EVENT_COLUMNS,
   FALLBACK_HISTORY_2025,
-  sortHistoryDescending,
-  mergeWithFallback
+  sortHistoryDescending
 } from './historik-data.js';
 
 const app = initializeApp(firebaseConfig);
@@ -32,20 +31,20 @@ async function loadHistory() {
   try {
     const snap = await getDocs(collection(db, 'history'));
     const firestoreDocs = snap.docs.map(d => d.data());
-    const merged = mergeWithFallback(firestoreDocs, [FALLBACK_HISTORY_2025]);
-    const sorted = sortHistoryDescending(merged);
 
     document.getElementById('loading').classList.add('hidden');
-    document.getElementById('history-content').classList.remove('hidden');
 
-    if (sorted.length === 0) {
+    // Om Firestore är totmt (och hämtningen gick bra) — visa empty-state
+    if (firestoreDocs.length === 0) {
       document.getElementById('history-empty').classList.remove('hidden');
       return;
     }
 
+    const sorted = sortHistoryDescending(firestoreDocs);
+    document.getElementById('history-content').classList.remove('hidden');
     renderHistory(sorted);
   } catch {
-    // Firestore misslyckades — visa åtminstone 2025-fallback
+    // Firestore misslyckades — visa 2025-fallback som säkerhetsnät
     const sorted = sortHistoryDescending([FALLBACK_HISTORY_2025]);
     document.getElementById('loading').classList.add('hidden');
     document.getElementById('history-content').classList.remove('hidden');
@@ -64,10 +63,12 @@ function renderYearCard(doc) {
     ? doc.participantCount
     : participants.length;
 
+  const dateLabel = doc.date ? ` — ${formatDate(doc.date)}` : '';
+
   return `
     <div class="card" style="margin-top: 1.5rem;">
       <div class="card-header">
-        <h2>TrelleMasters ${esc(doc.year)}</h2>
+        <h2>TrelleMasters ${esc(doc.year)}${esc(dateLabel)}</h2>
       </div>
       ${doc.winner
         ? `<p><strong>Vinnare:</strong> ${esc(doc.winner)} 🏆 — ${count} deltagare</p>`
@@ -96,7 +97,7 @@ function renderYearCard(doc) {
 function renderParticipantRow(p) {
   const isLeader = p.rank === 1;
   const rowClass = isLeader ? 'leader' : '';
-  const rankText = isLeader ? '🏆 1' : p.rank;
+  const rankText = isLeader ? '🏆 1' : esc(p.rank);
 
   // Stöd både nytt format (breakdown/handicap) och gammalt (scores/hcp)
   const breakdown = p.breakdown || p.scores || {};
@@ -104,15 +105,15 @@ function renderParticipantRow(p) {
 
   const cells = EVENT_COLUMNS.map(col => {
     const pts = breakdown[col.id];
-    return `<td>${pts != null ? pts : '–'}</td>`;
+    return `<td>${pts != null ? esc(pts) : '–'}</td>`;
   }).join('');
 
   return `<tr class="${rowClass}">
     <td>${rankText}</td>
     <td>${esc(p.name)}</td>
-    <td>${hcp}</td>
+    <td>${esc(hcp)}</td>
     ${cells}
-    <td><strong>${p.total}</strong></td>
+    <td><strong>${esc(p.total)}</strong></td>
   </tr>`;
 }
 
@@ -124,4 +125,14 @@ function esc(str) {
   const d = document.createElement('div');
   d.textContent = str;
   return d.innerHTML;
+}
+
+function formatDate(dateStr) {
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString('sv-SE', { day: 'numeric', month: 'long' });
+  } catch {
+    return dateStr;
+  }
 }
