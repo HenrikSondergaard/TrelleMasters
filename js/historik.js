@@ -34,7 +34,7 @@ async function loadHistory() {
 
     document.getElementById('loading').classList.add('hidden');
 
-    // Om Firestore är totmt (och hämtningen gick bra) — visa empty-state
+    // Om Firestore är tomt (och hämtningen gick bra) — visa empty-state
     if (firestoreDocs.length === 0) {
       document.getElementById('history-empty').classList.remove('hidden');
       return;

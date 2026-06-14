@@ -936,18 +936,20 @@ document.getElementById('delete-data-btn').addEventListener('click', async () =>
       console.log(`[TrelleMasters] Raderade ${snap.size} dokument från ${colName}`);
     }
 
-    // Återställ settings till standard
-    await setDoc(doc(db, 'settings', 'tournament'), {
-      registrationOpen: false,
-      currentEvent: '',
-      secretCode: '',
-      finalized: false
-    });
+    // Radera settings-dokumentet helt så att "Initiera tävling" kan köras igen
+    // (init-vakten avbryter om dokumentet finns kvar)
+    await deleteDoc(doc(db, 'settings', 'tournament'));
 
-    console.log(`[TrelleMasters] Totalt raderade ${totalDeleted} dokument. Inställningar återställda.`);
+    // Tävlingsdatan är borta — återställ finalize-knappen direkt
+    // (settings-lyssnaren triggar inte när dokumentet saknas)
+    const finalizeBtn = document.getElementById('finalize-tournament-btn');
+    finalizeBtn.disabled = false;
+    finalizeBtn.textContent = '🏁 Avsluta tävling';
+
+    console.log(`[TrelleMasters] Totalt raderade ${totalDeleted} dokument. Inställningar rensade.`);
     msgEl.innerHTML =
       `<p class="success-message"><strong>✅ Raderat!</strong> ${totalDeleted} dokument ` +
-      `borttagna. Inställningar återställda till standard.</p>`;
+      `borttagna. Inställningar rensade — kör "Initiera tävling" för att starta en ny säsong.</p>`;
     msgEl.classList.remove('hidden');
     btn.textContent = '🗑️ Radera all tävlingsdata';
     btn.disabled = false;
