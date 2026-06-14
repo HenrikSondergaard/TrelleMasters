@@ -1,0 +1,17 @@
+// ============================================================
+//  Mixins & breakpoints
+//  Mobile-first: base styles target small screens, these layer up/down.
+// ============================================================
+
+@mixin small-mobile { @media (max-width: 480px) { @content; } }
+@mixin mobile       { @media (max-width: 767px) { @content; } }
+@mixin tablet-up    { @media (min-width: 768px) { @content; } }
+@mixin wide-up      { @media (min-width: 1024px) { @content; } }
+
+// Visible, accessible focus ring used across interactive elements.
+@mixin focus-ring($color: var(--color-accent)) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: 2px;
+  }
+}

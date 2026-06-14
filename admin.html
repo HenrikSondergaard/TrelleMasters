@@ -4,20 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — TrelleMasters 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header">
     <nav class="nav-container">
-      <a href="index.html" class="nav-logo">⛳ TrelleMasters 2026</a>
-      <button class="hamburger" id="hamburger" aria-label="Meny">☰</button>
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon" aria-hidden="true">⛳</span>
+        <span class="logo-text">TrelleMasters 2026</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Meny" aria-expanded="false" aria-controls="nav-links">☰</button>
       <ul class="nav-links" id="nav-links">
         <li><a href="index.html">Tävlingen</a></li>
         <li><a href="registrera.html">Anmälan</a></li>
         <li><a href="deltagare.html">Deltagare</a></li>
         <li><a href="resultattavla.html">Resultattavla</a></li>
         <li><a href="historik.html">Historik</a></li>
-        <li><a href="admin.html" class="active">Admin</a></li>
+        <li><a href="admin.html" class="active" aria-current="page">Admin</a></li>
       </ul>
     </nav>
   </header>
