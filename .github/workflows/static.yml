@@ -16,11 +16,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ── Lint & Test ──────────────────────────────────────────────────────────────
+  # ── Lint, Test & Build ───────────────────────────────────────────────────────
   # Körs vid push till main OCH vid pull requests mot main.
-  # Avbryter pipelinen om lint-fel eller misslyckade tester hittas.
+  # Avbryter pipelinen om lint-fel, misslyckade tester eller CSS-byggfel hittas.
   ci:
-    name: Lint & Test
+    name: Lint, Test & Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +33,9 @@ jobs:
       - name: Installera beroenden
         run: npm install
 
+      - name: Bygg CSS (Sass)
+        run: npm run build
+
       - name: Lint (ESLint)
         run: npm run lint
 
@@ -41,6 +44,8 @@ jobs:
 
   # ── Deploy till GitHub Pages ─────────────────────────────────────────────────
   # Körs bara vid lyckad push till main (inte vid pull requests).
+  # CSS byggs från css/src/*.scss FÖRE uppladdning. node_modules tas bort så att
+  # endast den statiska sajten hamnar i Pages-artefakten.
   # Inga GitHub Secrets krävs — GitHub Pages använder den inbyggda GITHUB_TOKEN.
   deploy:
     name: Deploy till GitHub Pages
@@ -52,6 +57,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installera beroenden
+        run: npm ci
+
+      - name: Bygg CSS (Sass)
+        run: npm run build
+
+      - name: Ta bort dev-beroenden inför uppladdning
+        run: rm -rf node_modules
 
       - name: Konfigurera Pages
         uses: actions/configure-pages@v4

@@ -1,0 +1,391 @@
+@use 'mixins' as *;
+
+// ============================================================
+//  HERO  (front page — refined further in its own PR)
+// ============================================================
+.hero {
+  text-align: center;
+  padding: 4rem 1.5rem 3.5rem;
+  margin-bottom: 2rem;
+  background: var(--gradient-hero);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(45, 90, 39, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 80% 30%, rgba(45, 90, 39, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px, 36px 36px;
+  pointer-events: none;
+}
+
+.hero > * {
+  position: relative;
+}
+
+.hero-icon {
+  margin: 0 auto 0.5rem;
+  filter: drop-shadow(0 8px 16px rgba(45, 90, 39, 0.25));
+  animation: heroFloat 4s ease-in-out infinite;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.hero .tagline {
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  color: var(--color-text-light);
+  margin-bottom: 0.5rem;
+}
+
+.hero .hero-date,
+.hero .event-date {
+  font-size: 1.1rem;
+  color: var(--color-accent-dark);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+@include mobile {
+  .hero {
+    padding: 2.75rem 1rem 2.25rem;
+  }
+}
+
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+// ============================================================
+//  FRONT-PAGE SECTIONS & MOMENT GRID
+// ============================================================
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.packlist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+}
+
+.packlist li {
+  padding-left: 1.6rem;
+  position: relative;
+}
+
+.packlist li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--color-primary-light);
+  font-weight: 700;
+}
+
+.moments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.moment-card {
+  padding: 1.35rem;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.moment-card h3 {
+  font-size: 1.1rem;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.moment-card p {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.moment-card small {
+  font-size: 0.8rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
+}
+
+.moment-emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+@include small-mobile {
+  .moments-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ============================================================
+//  MOBILE SCOREBOARD — CARD LAYOUT
+// ============================================================
+@include mobile {
+  .scoreboard-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .score-card {
+    background: var(--color-bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 1rem;
+    position: relative;
+  }
+
+  .score-card.leader {
+    border-left: 4px solid var(--color-accent);
+    background: linear-gradient(135deg, rgba(212, 168, 67, 0.06), var(--color-bg-white));
+  }
+
+  .score-card .score-card-rank {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--color-primary);
+  }
+
+  .score-card.leader .score-card-rank {
+    background-color: var(--color-accent);
+    color: var(--color-primary-dark);
+  }
+
+  .score-card .score-card-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-text);
+    margin-bottom: 0.35rem;
+    padding-right: 40px;
+  }
+
+  .score-card .score-card-scores {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .score-card .score-item {
+    text-align: center;
+    padding: 0.35rem 0.25rem;
+    background-color: var(--color-bg);
+    border-radius: 4px;
+  }
+
+  .score-card .score-item .hole-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .score-card .score-item .hole-value {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-text);
+  }
+
+  .score-card .score-total {
+    margin-top: 0.65rem;
+    padding-top: 0.5rem;
+    border-top: 2px solid var(--color-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .score-card .score-total .total-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+  }
+
+  .score-card .score-total .total-value {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+  }
+
+  .scoreboard-table-mobile-hide {
+    display: none;
+  }
+}
+
+// ============================================================
+//  SPLASH / SUCCESS PAGE (after registration)
+// ============================================================
+.splash {
+  position: relative;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212, 168, 67, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 80%, rgba(74, 138, 66, 0.14) 0%, transparent 60%),
+    var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.splash-content {
+  position: relative;
+  z-index: 2;
+}
+
+.splash-trophy {
+  font-size: 4.5rem;
+  animation: splashBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.splash-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin: 0.5rem 0 0.25rem;
+  animation: splashFadeUp 0.6s ease 0.2s both;
+}
+
+.splash-name {
+  font-size: 1.35rem;
+  color: var(--color-accent-dark);
+  font-weight: 700;
+  animation: splashFadeUp 0.6s ease 0.35s both;
+}
+
+.splash-subtitle {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  margin-bottom: 1.5rem;
+  animation: splashFadeUp 0.6s ease 0.5s both;
+}
+
+.splash-countdown {
+  display: inline-block;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  animation: splashFadeUp 0.6s ease 0.65s both;
+}
+
+.splash-countdown-label {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.splash-countdown-timer {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.splash-quote {
+  font-style: italic;
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  max-width: 420px;
+  margin: 0 auto 1.5rem;
+  padding: 0 0.5rem;
+  animation: splashFadeUp 0.6s ease 0.8s both;
+}
+
+.splash-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  animation: splashFadeUp 0.6s ease 0.95s both;
+}
+
+.splash-actions .btn {
+  min-width: 260px;
+}
+
+@media (min-width: 480px) {
+  .splash-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@keyframes splashBounce {
+  0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+  60%  { transform: scale(1.2) rotate(8deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+@keyframes splashFadeUp {
+  from { transform: translateY(15px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+// Confetti
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  top: -20px;
+  animation: confettiFall 2.5s ease-in forwards;
+}
+
+@keyframes confettiFall {
+  0%   { transform: translateY(0) rotateZ(0); opacity: 1; }
+  100% { transform: translateY(600px) rotateZ(720deg); opacity: 0; }
+}

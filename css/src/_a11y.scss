@@ -1,0 +1,72 @@
+// ============================================================
+//  ACCESSIBILITY, MOTION & PRINT
+// ============================================================
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+// Respect reduced-motion: neutralise animations & transitions.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+// ============================================================
+//  PRINT
+// ============================================================
+@media print {
+  .site-header,
+  .site-footer,
+  .hamburger,
+  .btn,
+  .modal-overlay {
+    display: none !important;
+  }
+
+  main {
+    margin-top: 0;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+
+  table thead th,
+  .table thead th {
+    background: #333 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

@@ -1,0 +1,99 @@
+// ============================================================
+//  Reset & base typography
+// ============================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(74, 138, 66, 0.06) 0%, transparent 35%),
+    radial-gradient(circle at 100% 100%, rgba(212, 168, 67, 0.05) 0%, transparent 35%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ----- Headings: display face, tight & confident -----
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); }
+h2 { font-size: clamp(1.4rem, 2.6vw, 1.8rem); }
+h3 { font-size: 1.2rem; }
+
+p { text-wrap: pretty; }
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+a:hover,
+a:focus {
+  color: var(--color-primary-light);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+// Decorative blockquote (used on the front page)
+blockquote {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 2.25rem;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+
+blockquote::before {
+  content: '\201C';
+  position: absolute;
+  left: 0;
+  top: -0.35rem;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--color-accent);
+  opacity: 0.6;
+}
