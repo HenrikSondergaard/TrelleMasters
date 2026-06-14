@@ -168,6 +168,23 @@
           <div id="settings-message" class="hidden" style="margin-top:1rem;"></div>
         </div>
 
+        <!-- MIGRERA 2025-HISTORIK -->
+        <div class="card" style="margin-top:1.5rem;">
+          <div class="card-header">
+            <h2>📦 Migrera 2025-historik</h2>
+          </div>
+          <p class="text-light">
+            Skriver 2025 års resultat (som ligger hårdkodade som fallback) till
+            Firestore-samlingen <code>history/2025</code>. Efter detta hämtas
+            datan dynamiskt från Firestore istället för från koden.
+            Säker att köra flera gånger — skriver över vid behov.
+          </p>
+          <button id="migrate-2025-btn" class="btn btn-accent" style="width:100%;">
+            📦 Migrera 2025 till Firestore
+          </button>
+          <div id="migrate-2025-message" class="hidden" style="margin-top:1rem;"></div>
+        </div>
+
         <!-- AVSLUTA TÄVLING -->
         <div class="card" style="margin-top:1.5rem; border:2px solid var(--color-error);">
           <div class="card-header">
