@@ -1,0 +1,90 @@
+// ============================================================
+//  REGISTRATION (registrera.html)
+// ============================================================
+
+// Golf-course banner at the top of the form card (decorative)
+.reg-banner {
+  height: 120px;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(22, 48, 15, 0.22) 0%, rgba(22, 48, 15, 0.45) 100%),
+    url('../assets/golf-course.svg');
+  background-size: cover, cover;
+  background-position: center, bottom center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.reg-banner::after {
+  content: '⛳';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+}
+
+// ============================================================
+//  SUCCESS SPLASH — celebratory golf-course scene
+//  (overrides the light base splash in _pages.scss)
+// ============================================================
+.splash {
+  color: #fff;
+  border: none;
+  background:
+    linear-gradient(180deg, rgba(22, 48, 15, 0.5) 0%, rgba(22, 48, 15, 0.62) 100%),
+    url('../assets/golf-course.svg');
+  background-size: cover, cover;
+  background-position: center, bottom center;
+  background-repeat: no-repeat, no-repeat;
+  box-shadow: var(--shadow-xl);
+}
+
+.splash-title {
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
+}
+
+.splash-name {
+  color: var(--color-accent-light);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+.splash-subtitle {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.splash-countdown {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.splash-countdown-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.splash-countdown-timer {
+  color: #fff;
+}
+
+.splash-quote {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+// Keep the secondary action button readable on the dark scene
+.splash-actions .btn-secondary {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: transparent;
+}
+
+.splash-actions .btn-secondary:hover,
+.splash-actions .btn-secondary:focus {
+  background: #fff;
+  color: var(--color-primary);
+}
