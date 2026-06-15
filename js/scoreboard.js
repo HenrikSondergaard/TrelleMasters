@@ -146,12 +146,12 @@ function renderDesktopTable(leaderboard) {
 
   // Header
   header.innerHTML = `<tr>
-    <th>#</th><th>Namn</th>
+    <th class="rank-col">#</th><th class="name-col">Namn</th>
     ${EVENT_COLUMNS.map(col => {
       const isActive = currentEvent === col.id;
       return `<th class="${isActive ? 'active-event-col' : ''}">${col.label}</th>`;
     }).join('')}
-    <th>Totalt</th>
+    <th class="total-col">Totalt</th>
   </tr>`;
 
   // Body
@@ -159,14 +159,14 @@ function renderDesktopTable(leaderboard) {
     const isLeader = p.rank === 1 && p.total > 0;
     const rowClass = isLeader ? 'leader' : '';
     return `<tr class="${rowClass}">
-      <td>${isLeader ? '👑' : p.rank}</td>
+      <td class="rank-cell">${isLeader ? '👑' : p.rank}</td>
       <td class="name-cell">${esc(p.name)}${p.name === 'Henrik S' ? ' <small>🏆</small>' : ''}</td>
       ${EVENT_COLUMNS.map(col => {
         const isActive = currentEvent === col.id;
         const pts = p.evScores[col.id];
         return `<td class="${isActive ? 'active-event-col' : ''}">${pts !== null ? pts : '–'}</td>`;
       }).join('')}
-      <td><strong>${p.total}</strong></td>
+      <td class="total-cell"><strong>${p.total}</strong></td>
     </tr>`;
   }).join('');
 }
@@ -175,21 +175,23 @@ function renderMobileCards(leaderboard) {
   const container = document.getElementById('mobile-scoreboard');
   container.innerHTML = leaderboard.map(p => {
     const isLeader = p.rank === 1 && p.total > 0;
-    return `<div class="card ${isLeader ? 'leader' : ''}" style="padding:1rem; margin-bottom:0.75rem;">
-      <div class="flex-between mb-1">
-        <span>${isLeader ? '👑' : '#' + p.rank} <strong>${esc(p.name)}</strong>${p.name === 'Henrik S' ? ' 🏆' : ''}</span>
-        <span style="font-size:1.2rem; font-weight:bold;">${p.total} p</span>
+    return `<article class="lb-card ${isLeader ? 'leader' : ''}">
+      <div class="lb-card-top">
+        <span class="lb-rank">${isLeader ? '👑' : p.rank}</span>
+        <span class="lb-name">${esc(p.name)}${p.name === 'Henrik S' ? ' 🏆' : ''}</span>
+        <span class="lb-total">${p.total}<small>p</small></span>
       </div>
-      <div class="grid" style="grid-template-columns:repeat(4, 1fr); gap:0.25rem; font-size:0.85rem;">
+      <div class="lb-scores">
         ${EVENT_COLUMNS.map(col => {
           const pts = p.evScores[col.id];
-          return `<div style="text-align:center; padding:0.25rem; background:${currentEvent === col.id ? 'var(--color-accent-light)' : 'var(--color-bg)'}; border-radius:4px;">
-            <small class="text-light">${EVENT_COLUMNS.find(c => c.id === col.id).label}</small><br>
-            <strong>${pts !== null ? pts : '–'}</strong>
+          const isActive = currentEvent === col.id;
+          return `<div class="lb-score${isActive ? ' is-active' : ''}">
+            <span class="lb-score-label">${col.label}</span>
+            <span class="lb-score-val">${pts !== null ? pts : '–'}</span>
           </div>`;
         }).join('')}
       </div>
-    </div>`;
+    </article>`;
   }).join('');
 }
 
