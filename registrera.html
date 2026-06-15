@@ -44,7 +44,8 @@
 
       <!-- Registration form container (hidden when registration is closed) -->
       <div id="registration-form-container" class="hidden">
-        <div class="card">
+        <div class="card reg-card">
+          <div class="reg-banner" aria-hidden="true"></div>
           <form id="registration-form" novalidate>
             <div class="form-group">
               <label for="reg-name">Namn *</label>
@@ -78,7 +79,7 @@
                      placeholder="Ange hemlig kod">
             </div>
 
-            <button type="submit" class="btn btn-primary w-full">Skicka anmälan</button>
+            <button type="submit" class="btn btn-primary btn-lg w-full">Skicka anmälan</button>
           </form>
 
           <!-- Error message -->
