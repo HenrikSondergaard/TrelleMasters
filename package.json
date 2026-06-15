@@ -6,6 +6,7 @@
   "scripts": {
     "build": "sass css/src/main.scss css/style.css --no-source-map --style=expanded",
     "build:watch": "sass --watch css/src/main.scss css/style.css --no-source-map --style=expanded",
+    "serve": "node scripts/serve.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint js/"
