@@ -199,7 +199,7 @@ function updateTotalCount() {
   if (total === 0) {
     countEl.textContent = 'Inga anmälningar ännu';
   } else {
-    countEl.textContent = `${total} anmälan${total !== 1 ? 'r' : ''} (${approved} godkända)`;
+    countEl.textContent = `${total} anmäl${total === 1 ? 'an' : 'ningar'} (${approved} godkända)`;
   }
 }
 
