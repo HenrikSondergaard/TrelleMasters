@@ -16,20 +16,21 @@ function renderTables() {
         : `${band.min} till ${band.max}`;
       return `
         <tr>
-          <td><span>${band.emoji}</span> ${band.label}</td>
+          <td class="hcp-band"><span class="hcp-band-emoji" aria-hidden="true">${band.emoji}</span> ${band.label}</td>
           <td class="text-muted">${hcpRange}</td>
-          <td class="text-center"><strong>${attempts}</strong></td>
+          <td class="text-center"><span class="hcp-attempts">${attempts}</span></td>
         </tr>`;
     }).join('');
 
     return `
-      <div class="card" style="margin-bottom: 1rem;">
-        <h3 style="color: var(--color-primary); margin-bottom: 0.5rem;">
-          ${moment.emoji} ${moment.name}
-        </h3>
-        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.75rem;">
-          ${moment.rule}
-        </p>
+      <div class="card hcp-moment">
+        <div class="hcp-moment-head">
+          <span class="hcp-moment-emoji" aria-hidden="true">${moment.emoji}</span>
+          <div>
+            <h3>${moment.name}</h3>
+            <p class="hcp-moment-rule">${moment.rule}</p>
+          </div>
+        </div>
         <div class="table-wrapper">
           <table>
             <thead>
@@ -74,14 +75,12 @@ function setupCalculator() {
     let attemptsHtml = MOMENTS.map((moment) => {
       const bandIndex = HCP_BANDS.findIndex((b) => b.id === band.id);
       const attempts = moment.attempts[bandIndex];
-      return `<tr><td>${moment.emoji} ${moment.name}</td><td class="text-center"><strong>${attempts}</strong></td></tr>`;
+      return `<tr><td>${moment.emoji} ${moment.name}</td><td class="text-center"><span class="hcp-attempts">${attempts}</span></td></tr>`;
     }).join('');
 
     result.innerHTML = `
-      <div class="card" style="background: var(--color-bg); padding: 1rem;">
-        <p style="font-weight: 700; color: var(--color-primary); margin-bottom: 0.5rem;">
-          ${band.emoji} Ditt band: ${band.label}
-        </p>
+      <div class="card hcp-result-card">
+        <p class="hcp-result-band"><span aria-hidden="true">${band.emoji}</span> Ditt band: ${band.label}</p>
         <table>
           <thead><tr><th>Moment</th><th class="text-center">Försök</th></tr></thead>
           <tbody>${attemptsHtml}</tbody>
