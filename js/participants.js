@@ -94,10 +94,10 @@ function renderRows(tbody, participants) {
       : '—';
 
     tr.innerHTML =
-      `<td>${i + 1}</td>` +
-      `<td class="font-semibold">${escapeHtml(p.name)}</td>` +
-      `<td>${hcpStr}</td>` +
-      `<td>${formatDate(p.registeredAt)}</td>`;
+      `<td class="num-cell">${i + 1}</td>` +
+      `<td class="name-cell"><span class="player"><span class="avatar avatar-sm" aria-hidden="true">${escapeHtml(initialOf(p.name))}</span><span class="player-name">${escapeHtml(p.name)}</span></span></td>` +
+      `<td><span class="hcp-chip">${hcpStr}</span></td>` +
+      `<td class="text-muted">${formatDate(p.registeredAt)}</td>`;
 
     tbody.appendChild(tr);
   });
@@ -112,6 +112,12 @@ function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
+}
+
+// Decorative avatar initial (first letter of the existing name)
+function initialOf(name) {
+  const c = (name || '').trim().charAt(0);
+  return c ? c.toUpperCase() : '?';
 }
 
 // -----------------------------------------------------------
