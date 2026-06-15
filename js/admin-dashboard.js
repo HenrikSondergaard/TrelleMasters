@@ -478,13 +478,17 @@ document.getElementById('calculate-scores-btn').addEventListener('click', async 
   const resultEl = document.getElementById('scoring-result');
 
   try {
+    let ok;
     if (eventId === 'scramble') {
-      await saveScrambleScores(N, resultEl);
+      ok = await saveScrambleScores(N, resultEl);
     } else if (eventId === 'roliga_skott') {
-      await saveRoligaSkottScores(N, resultEl);
+      ok = await saveRoligaSkottScores(N, resultEl);
     } else {
-      await saveIndividualScores(eventId, ev, N, resultEl);
+      ok = await saveIndividualScores(eventId, ev, N, resultEl);
     }
+
+    // Avbröt valideringen? Markera då INTE momentet som klart
+    if (ok === false) return;
 
     // Mark event as completed
     await updateDoc(doc(db, 'events', eventId), { status: 'completed' });
@@ -515,7 +519,7 @@ async function saveIndividualScores(eventId, ev, N, resultEl) {
   if (missing.length > 0) {
     resultEl.innerHTML = `<p class="error-message">Fyll i poäng eller kryssa i "Deltar ej" för: <strong>${missing.join(', ')}</strong></p>`;
     resultEl.classList.remove('hidden');
-    return;
+    return false;
   }
 
   const results = calculateTournamentPoints(entries, N, ev.scoreDirection || 'higher_is_better');
@@ -551,6 +555,7 @@ async function saveIndividualScores(eventId, ev, N, resultEl) {
       <td>${r.rank ?? '—'}</td><td><strong>${r.tournamentPoints}</strong></td></tr>
     `).join('')}</tbody></table>`;
   resultEl.classList.remove('hidden');
+  return true;
 }
 
 async function saveRoligaSkottScores(N, resultEl) {
@@ -593,6 +598,7 @@ async function saveRoligaSkottScores(N, resultEl) {
       <td>${r.rank ?? '—'}</td><td><strong>${r.tournamentPoints}</strong></td></tr>
     `).join('')}</tbody></table>`;
   resultEl.classList.remove('hidden');
+  return true;
 }
 
 async function saveScrambleScores(N, resultEl) {
@@ -609,7 +615,7 @@ async function saveScrambleScores(N, resultEl) {
   if (missingTeams.length > 0) {
     resultEl.innerHTML = `<p class="error-message">Fyll i resultat för alla lag. Saknas: <strong>${missingTeams.map(t => t.name).join(', ')}</strong></p>`;
     resultEl.classList.remove('hidden');
-    return;
+    return false;
   }
 
   const ranked = calculateScramblePoints(teams.filter(t => Number.isFinite(t.scrambleResult)), N);
@@ -651,6 +657,7 @@ async function saveScrambleScores(N, resultEl) {
       <td>${t.scrambleRank}</td><td><strong>${t.scramblePoints}</strong></td></tr>
     `).join('')}</tbody></table>`;
   resultEl.classList.remove('hidden');
+  return true;
 }
 
 // ============================================================
