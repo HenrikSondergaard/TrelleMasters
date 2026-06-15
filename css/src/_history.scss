@@ -1,0 +1,51 @@
+// ============================================================
+//  HISTORY (historik.html)
+//  Reuses .rank-badge/.medal-*/.player/.avatar/.total-pill/.hcp-chip.
+// ============================================================
+
+.history-card {
+  position: relative;
+  overflow: hidden;
+  margin-top: 1.5rem;
+}
+
+.history-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-accent);
+}
+
+.history-card .card-header h2 {
+  font-size: 1.3rem;
+}
+
+// Champion banner (gold)
+.history-champion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #fffaf0 0%, #fbeecb 100%);
+  border: 1px solid var(--color-accent);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.history-champion strong {
+  color: var(--color-accent-dark);
+}
+
+.history-meta {
+  margin-bottom: 1.1rem;
+  color: var(--color-text-light);
+}
+
+#history-cards td {
+  vertical-align: middle;
+}
