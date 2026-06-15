@@ -2014,6 +2014,55 @@ textarea {
   vertical-align: middle;
 }
 
+.login-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.login-card .reg-banner {
+  height: 96px;
+}
+
+.login-card h2 {
+  color: var(--color-primary);
+}
+
+.admin-tabs {
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+  border-bottom: none;
+  flex-wrap: wrap;
+}
+
+.admin-tabs .tab-btn {
+  margin-bottom: 0;
+  padding: 0.5rem 1.15rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text-light);
+}
+
+.admin-tabs .tab-btn:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary-light);
+}
+
+.admin-tabs .tab-btn.active {
+  background: var(--gradient-fairway);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+}
+
+.danger-zone .card-header {
+  border-bottom-color: rgba(192, 57, 43, 0.2);
+}
+
+.danger-zone .card-header h2 {
+  color: var(--color-error);
+}
+
 .text-center {
   text-align: center;
 }
