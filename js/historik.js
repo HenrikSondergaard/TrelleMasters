@@ -66,13 +66,13 @@ function renderYearCard(doc) {
   const dateLabel = doc.date ? ` — ${formatDate(doc.date)}` : '';
 
   return `
-    <div class="card" style="margin-top: 1.5rem;">
+    <div class="card history-card">
       <div class="card-header">
         <h2>TrelleMasters ${esc(doc.year)}${esc(dateLabel)}</h2>
       </div>
       ${doc.winner
-        ? `<p><strong>Vinnare:</strong> ${esc(doc.winner)} 🏆 — ${count} deltagare</p>`
-        : `<p>${count} deltagare</p>`
+        ? `<p class="history-champion"><strong>Vinnare:</strong> ${esc(doc.winner)} 🏆 — ${count} deltagare</p>`
+        : `<p class="history-meta">${count} deltagare</p>`
       }
       <div class="table-wrapper">
         <table>
@@ -97,7 +97,7 @@ function renderYearCard(doc) {
 function renderParticipantRow(p) {
   const isLeader = p.rank === 1;
   const rowClass = isLeader ? 'leader' : '';
-  const rankText = isLeader ? '🏆 1' : esc(p.rank);
+  const rankText = esc(p.rank);
 
   // Stöd både nytt format (breakdown/handicap) och gammalt (scores/hcp)
   const breakdown = p.breakdown || p.scores || {};
@@ -109,11 +109,11 @@ function renderParticipantRow(p) {
   }).join('');
 
   return `<tr class="${rowClass}">
-    <td>${rankText}</td>
-    <td>${esc(p.name)}</td>
-    <td>${esc(hcp)}</td>
+    <td class="rank-cell"><span class="rank-badge${p.rank <= 3 ? ' medal-' + p.rank : ''}">${rankText}</span></td>
+    <td class="name-cell"><span class="player"><span class="avatar avatar-sm" aria-hidden="true">${esc(initialOf(p.name))}</span><span class="player-name">${esc(p.name)}</span></span></td>
+    <td><span class="hcp-chip">${esc(hcp)}</span></td>
     ${cells}
-    <td><strong>${esc(p.total)}</strong></td>
+    <td class="total-cell"><span class="total-pill">${esc(p.total)}</span></td>
   </tr>`;
 }
 
@@ -125,6 +125,12 @@ function esc(str) {
   const d = document.createElement('div');
   d.textContent = str;
   return d.innerHTML;
+}
+
+// Decorative avatar initial (first letter of the existing name)
+function initialOf(name) {
+  const c = String(name ?? '').trim().charAt(0);
+  return c ? c.toUpperCase() : '?';
 }
 
 function formatDate(dateStr) {
