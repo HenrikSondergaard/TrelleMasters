@@ -11,6 +11,7 @@ import {
   FALLBACK_HISTORY_2025,
   sortHistoryDescending
 } from './historik-data.js';
+import { formatHandicap } from './handicap-utils.js';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -101,7 +102,10 @@ function renderParticipantRow(p) {
 
   // Stöd både nytt format (breakdown/handicap) och gammalt (scores/hcp)
   const breakdown = p.breakdown || p.scores || {};
-  const hcp = p.handicap != null ? p.handicap : (p.hcp != null ? p.hcp : '–');
+  const hcpRaw = p.handicap != null ? p.handicap : (p.hcp != null ? p.hcp : null);
+  const hcp = hcpRaw != null
+    ? (typeof hcpRaw === 'number' ? formatHandicap(hcpRaw) : hcpRaw)
+    : '–';
 
   const cells = EVENT_COLUMNS.map(col => {
     const pts = breakdown[col.id];

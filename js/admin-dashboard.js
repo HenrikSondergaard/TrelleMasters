@@ -496,16 +496,27 @@ document.getElementById('calculate-scores-btn').addEventListener('click', async 
 
 async function saveIndividualScores(eventId, ev, N, resultEl) {
   const entries = [];
+  const missing = [];
   document.querySelectorAll('.score-input').forEach(inp => {
     const pid = inp.dataset.pid;
     const dnp = document.querySelector(`.dnp-checkbox[data-pid="${pid}"]`);
     const isDNP = dnp ? dnp.checked : false;
+    const val = parseFloat(inp.value);
+    if (!isDNP && isNaN(val)) {
+      missing.push(localParticipants.find(p => p.id === pid)?.name || pid);
+    }
     entries.push({
       participantId: pid,
-      rawScore: isDNP ? null : parseFloat(inp.value),
+      rawScore: isDNP ? null : val,
       didNotParticipate: isDNP
     });
   });
+
+  if (missing.length > 0) {
+    resultEl.innerHTML = `<p class="error-message">Fyll i poäng eller kryssa i "Deltar ej" för: <strong>${missing.join(', ')}</strong></p>`;
+    resultEl.classList.remove('hidden');
+    return;
+  }
 
   const results = calculateTournamentPoints(entries, N, ev.scoreDirection || 'higher_is_better');
 
@@ -593,7 +604,15 @@ async function saveScrambleScores(N, resultEl) {
     if (t) t.scrambleResult = parseFloat(inp.value);
   });
 
-  const ranked = calculateScramblePoints(teams.filter(t => t.scrambleResult != null), N);
+  // Validate: all teams must have a valid number
+  const missingTeams = teams.filter(t => !Number.isFinite(t.scrambleResult));
+  if (missingTeams.length > 0) {
+    resultEl.innerHTML = `<p class="error-message">Fyll i resultat för alla lag. Saknas: <strong>${missingTeams.map(t => t.name).join(', ')}</strong></p>`;
+    resultEl.classList.remove('hidden');
+    return;
+  }
+
+  const ranked = calculateScramblePoints(teams.filter(t => Number.isFinite(t.scrambleResult)), N);
 
   const batch = writeBatch(db);
   const existingSnap = await getDocs(query(collection(db, 'scores'), where('eventId', '==', 'scramble')));
