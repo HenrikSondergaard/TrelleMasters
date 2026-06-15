@@ -1,0 +1,171 @@
+// ============================================================
+//  LEADERBOARD (resultattavla.html)
+// ============================================================
+
+// ----- Desktop table -----
+#scoreboard-table thead th {
+  text-align: center;
+}
+
+#scoreboard-table thead th.name-col {
+  text-align: left;
+}
+
+#scoreboard-table thead th.total-col {
+  color: var(--color-accent-light);
+}
+
+#scoreboard-body td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#scoreboard-body td.name-cell {
+  text-align: left;
+  font-weight: 600;
+}
+
+#scoreboard-body td.name-cell small {
+  margin-left: 0.15rem;
+}
+
+// Rank column — display face, crown gets a touch more size on the leader row
+#scoreboard-body td.rank-cell {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--color-primary);
+  width: 3rem;
+}
+
+#scoreboard-body tr.leader td.rank-cell {
+  font-size: 1.25rem;
+}
+
+// Total column — emphasised with a soft green wash
+#scoreboard-body td.total-cell {
+  background: rgba(45, 90, 39, 0.05);
+}
+
+#scoreboard-body td.total-cell strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--color-primary);
+}
+
+#scoreboard-body tr.leader td.total-cell strong {
+  color: var(--color-accent-dark);
+}
+
+// ----- Mobile / card leaderboard -----
+.lb-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1rem 1.1rem;
+  margin-bottom: 0.85rem;
+}
+
+.lb-card.leader {
+  border-color: var(--color-accent);
+  background: linear-gradient(135deg, #fffdf5 0%, #fdf2d2 100%);
+  box-shadow: var(--shadow-accent);
+}
+
+.lb-card-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.lb-rank {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.45rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-mint);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.lb-card.leader .lb-rank {
+  background: var(--gradient-accent);
+  color: var(--color-primary-dark);
+}
+
+.lb-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+
+.lb-total {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.lb-total small {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  margin-left: 1px;
+}
+
+.lb-scores {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+
+.lb-score {
+  text-align: center;
+  padding: 0.35rem 0.2rem;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+}
+
+.lb-score.is-active {
+  background: var(--color-accent-light);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
+
+.lb-score-label {
+  display: block;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-light);
+  font-weight: 600;
+}
+
+.lb-score-val {
+  display: block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+// ----- Active-event banner -----
+#active-event-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#active-event-banner strong {
+  color: var(--color-primary-dark);
+}
