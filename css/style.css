@@ -1487,8 +1487,29 @@ textarea {
     opacity: 0;
   }
 }
+#desktop-scoreboard {
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+#desktop-scoreboard:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+#desktop-scoreboard .table-wrapper {
+  box-shadow: var(--shadow-lg);
+}
+
 #scoreboard-table thead th {
   text-align: center;
+  padding-top: 0.95rem;
+  padding-bottom: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.82rem;
 }
 
 #scoreboard-table thead th.name-col {
@@ -1502,40 +1523,118 @@ textarea {
 #scoreboard-body td {
   text-align: center;
   vertical-align: middle;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
 }
 
 #scoreboard-body td.name-cell {
   text-align: left;
+}
+
+#scoreboard-body tr:nth-child(even) {
+  background-color: rgba(74, 138, 66, 0.07);
+}
+
+#scoreboard-body tr:hover {
+  background-color: rgba(212, 168, 67, 0.12);
+}
+
+#scoreboard-body tr.leader {
+  background: linear-gradient(90deg, rgba(212, 168, 67, 0.3) 0%, rgba(212, 168, 67, 0.12) 100%);
   font-weight: 600;
 }
 
-#scoreboard-body td.name-cell small {
-  margin-left: 0.15rem;
+#scoreboard-body tr.leader td:first-child {
+  border-left: 4px solid var(--color-accent);
 }
 
 #scoreboard-body td.rank-cell {
+  width: 3.5rem;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: var(--color-mint);
+  color: var(--color-primary);
   font-family: var(--font-display);
   font-weight: 800;
-  color: var(--color-primary);
-  width: 3rem;
+  font-size: 0.9rem;
+  box-shadow: inset 0 0 0 1px rgba(45, 90, 39, 0.12);
 }
 
-#scoreboard-body tr.leader td.rank-cell {
-  font-size: 1.25rem;
-}
-
-#scoreboard-body td.total-cell {
-  background: rgba(45, 90, 39, 0.05);
-}
-
-#scoreboard-body td.total-cell strong {
-  font-family: var(--font-display);
+.rank-badge.medal-1 {
+  background: var(--gradient-accent);
+  color: var(--color-primary-dark);
+  box-shadow: 0 3px 10px rgba(212, 168, 67, 0.55);
   font-size: 1.05rem;
-  color: var(--color-primary);
 }
 
-#scoreboard-body tr.leader td.total-cell strong {
-  color: var(--color-accent-dark);
+.rank-badge.medal-2 {
+  background: linear-gradient(135deg, #eef1f4 0%, #c7d0d8 100%);
+  color: #59636f;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.rank-badge.medal-3 {
+  background: linear-gradient(135deg, #f1d4af 0%, #cd9a67 100%);
+  color: #5e3a1c;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.player {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.player-name {
+  font-weight: 600;
+}
+
+.avatar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: var(--gradient-fairway);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.avatar-sm {
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 0.78rem;
+}
+
+.total-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-fairway);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+#scoreboard-body tr.leader .total-pill {
+  background: var(--gradient-accent);
+  color: var(--color-primary-dark);
 }
 
 .lb-card {
@@ -1577,14 +1676,28 @@ textarea {
   font-size: 0.95rem;
 }
 
+.lb-rank.medal-1,
 .lb-card.leader .lb-rank {
   background: var(--gradient-accent);
   color: var(--color-primary-dark);
 }
 
+.lb-rank.medal-2 {
+  background: linear-gradient(135deg, #eef1f4 0%, #c7d0d8 100%);
+  color: #59636f;
+}
+
+.lb-rank.medal-3 {
+  background: linear-gradient(135deg, #f1d4af 0%, #cd9a67 100%);
+  color: #5e3a1c;
+}
+
 .lb-name {
   flex: 1 1 auto;
   min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 700;
   font-size: 1.05rem;
   color: var(--color-text);
