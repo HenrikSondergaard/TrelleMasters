@@ -1,0 +1,28 @@
+// ============================================================
+//  PARTICIPANT LISTS (deltagare.html)
+//  Reuses .player / .avatar / .player-name from the leaderboard.
+// ============================================================
+
+#approved-table td,
+#pending-table td {
+  vertical-align: middle;
+}
+
+#approved-table .num-cell,
+#pending-table .num-cell {
+  width: 2.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-text-light);
+}
+
+.hcp-chip {
+  display: inline-block;
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-mint);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
