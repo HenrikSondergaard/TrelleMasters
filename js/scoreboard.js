@@ -159,14 +159,14 @@ function renderDesktopTable(leaderboard) {
     const isLeader = p.rank === 1 && p.total > 0;
     const rowClass = isLeader ? 'leader' : '';
     return `<tr class="${rowClass}">
-      <td class="rank-cell">${isLeader ? '👑' : p.rank}</td>
-      <td class="name-cell">${esc(p.name)}${p.name === 'Henrik S' ? ' <small>🏆</small>' : ''}</td>
+      <td class="rank-cell"><span class="rank-badge${p.rank <= 3 ? ' medal-' + p.rank : ''}">${isLeader ? '👑' : p.rank}</span></td>
+      <td class="name-cell"><span class="player"><span class="avatar" aria-hidden="true">${esc(initialOf(p.name))}</span><span class="player-name">${esc(p.name)}${p.name === 'Henrik S' ? ' <small>🏆</small>' : ''}</span></span></td>
       ${EVENT_COLUMNS.map(col => {
         const isActive = currentEvent === col.id;
         const pts = p.evScores[col.id];
         return `<td class="${isActive ? 'active-event-col' : ''}">${pts !== null ? pts : '–'}</td>`;
       }).join('')}
-      <td class="total-cell"><strong>${p.total}</strong></td>
+      <td class="total-cell"><span class="total-pill">${p.total}</span></td>
     </tr>`;
   }).join('');
 }
@@ -177,8 +177,8 @@ function renderMobileCards(leaderboard) {
     const isLeader = p.rank === 1 && p.total > 0;
     return `<article class="lb-card ${isLeader ? 'leader' : ''}">
       <div class="lb-card-top">
-        <span class="lb-rank">${isLeader ? '👑' : p.rank}</span>
-        <span class="lb-name">${esc(p.name)}${p.name === 'Henrik S' ? ' 🏆' : ''}</span>
+        <span class="lb-rank${p.rank <= 3 ? ' medal-' + p.rank : ''}">${isLeader ? '👑' : p.rank}</span>
+        <span class="lb-name"><span class="avatar avatar-sm" aria-hidden="true">${esc(initialOf(p.name))}</span>${esc(p.name)}${p.name === 'Henrik S' ? ' 🏆' : ''}</span>
         <span class="lb-total">${p.total}<small>p</small></span>
       </div>
       <div class="lb-scores">
@@ -234,4 +234,10 @@ function esc(str) {
   const d = document.createElement('div');
   d.textContent = str;
   return d.innerHTML;
+}
+
+// Decorative avatar initial (first letter of the existing name)
+function initialOf(name) {
+  const c = (name || '').trim().charAt(0);
+  return c ? c.toUpperCase() : '?';
 }
